@@ -1,0 +1,38 @@
+{
+    "authors": "Frederico Caldeira Knabben",
+    "maintainers": [
+        {
+            "name": "Mateusz Charytoniuk",
+            "email": "m.charytoniuk@cksource.com"
+        }
+    ],
+    "name": "ckeditor-skintuner",
+    "description": "all editor skin parts in one place",
+    "keywords": ["ckeditor", "skintuner", "skin", "tuner"],
+    "license": "MIT",
+    "version": "2.0.0",
+    "main": "libraries/modules/skintuner.js",
+    "scripts": {
+        "test": "grunt test"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "grunt": "~0.4",
+        "grunt-contrib-clean": "~0.5",
+        "grunt-contrib-jshint": "~0.6",
+        "grunt-contrib-nodeunit": "~0.2",
+        "grunt-contrib-watch": "~0.5",
+        "grunt-istanbul": "~0.2",
+        "grunt-jsbeautifier": "~0.2",
+        "istanbul": "~0.1",
+        "nodeunit": "~0.8"
+    },
+    "homepage": "https://github.com/cksource/ckeditor-skintuner",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cksource/ckeditor-skintuner"
+    },
+    "engines": {
+        "node": ">=0.10"
+    }
+}

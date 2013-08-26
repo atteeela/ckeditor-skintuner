@@ -1,0 +1,26 @@
+{
+    "authors": "Frederico Caldeira Knabben",
+    "maintainers": [
+        {
+            "name": "Mateusz Charytoniuk",
+            "email": "m.charytoniuk@cksource.com"
+        }
+    ],
+    "name": "ckeditor-skintuner",
+    "description": "all editor skin parts in one place",
+    "keywords": ["ckeditor", "skintuner", "skin", "tuner"],
+    "license": "MIT",
+    "version": "2.0.0",
+    "main": "libraries/modules/skintuner.js",
+    "dependencies": {
+        "requirejs": "~2.1"
+    },
+    "devDependencies": {
+        "ckeditor": "ckeditor/ckeditor-dev"
+    },
+    "homepage": "https://github.com/cksource/ckeditor-skintuner",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/cksource/ckeditor-skintuner"
+    }
+}
