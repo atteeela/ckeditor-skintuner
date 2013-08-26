@@ -1,11 +1,13 @@
 module.exports = function (grunt) {
     "use strict";
 
-    var defaultTasks;
+    var defaultTasks,
+        path = require("path");
 
     defaultTasks = ["jsbeautifier", "test"];
 
     grunt.initConfig({
+        bower: grunt.file.readJSON("bower.json"),
         pkg: grunt.file.readJSON("package.json"),
 
         // grunt-contrib-clean
@@ -25,7 +27,7 @@ module.exports = function (grunt) {
 
         // grunt-contrib-nodeunit
         nodeunit: {
-            files: ["libraries/tests/**/*Test.js"]
+            files: ["tests/**/*Test.js"]
         },
 
         // grunt-contrib-watch
@@ -36,10 +38,7 @@ module.exports = function (grunt) {
 
         // grunt-istanbul
         instrument: {
-            files: [
-                "libraries/modules/*.js",
-                "libraries/scripts/**/*.js"
-            ],
+            files: ["scripts/**/*.js"],
             options: {
                 basePath: "coverage/instrument/"
             }
@@ -64,8 +63,24 @@ module.exports = function (grunt) {
             options: {
                 js: grunt.file.readJSON(".jsbeautifyrc")
             }
+        },
+
+        // grunt-requirejs
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: "scripts",
+                    generateSourceMaps: true,
+                    name: "<%= pkg.main %>",
+                    optimize: "uglify2",
+                    out: "build/<%= pkg.version %>/<%= pkg.name %>.js",
+                    preserveLicenseComments: false
+                }
+            }
         }
     });
+
+    // }, grunt.template.process("<%= requirejs.compile.options.baseUrl %>/../<%= pkg.main %>")));
 
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-jshint");
@@ -73,6 +88,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-istanbul");
     grunt.loadNpmTasks("grunt-jsbeautifier");
+    grunt.loadNpmTasks("grunt-requirejs");
 
     grunt.registerTask("register_globals", function (task) {
         var moduleRoot,
@@ -95,6 +111,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask("beautify", ["jsbeautifier"]);
+    grunt.registerTask("build", ["requirejs:compile"]);
     grunt.registerTask("cover", ["register_globals:coverage", "clean:instrument", "instrument", "test", "storeCoverage", "makeReport"]);
     grunt.registerTask("lint", ["jshint"]);
     grunt.registerTask("test", ["register_globals:test", "lint", "nodeunit"]);

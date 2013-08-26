@@ -20,10 +20,7 @@
         ];
 
     require.config({
-        baseUrl: "./scripts/",
-        paths: {
-            "skintuner": "../libraries/modules/skintuner"
-        }
+        baseUrl: "./scripts/"
     });
 
     /**
@@ -62,7 +59,7 @@
 
     setTimeout( initializeEditor, 0 );
 
-    require(["skintuner"], function (skintuner) {
+    require(["modules/ckeditor-skintuner"], function (skintuner) {
 
         var arbitraryIntervalThatAwaitsForCKEditorToBeReadyId,
             arbitraryIntervalThatAwaitsForCKEditorToBeReadyTimeout = 10,

@@ -5,6 +5,8 @@
 
 "use strict";
 
+/* global define: false */
+
 define( function () {
 
     return {

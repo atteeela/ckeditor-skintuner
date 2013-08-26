@@ -11,7 +11,7 @@
     "keywords": ["ckeditor", "skintuner", "skin", "tuner"],
     "license": "MIT",
     "version": "2.0.0",
-    "main": "libraries/modules/skintuner.js",
+    "main": "scripts/main.browser.js",
     "dependencies": {
         "requirejs": "~2.1"
     },

@@ -1,6 +1,9 @@
 # automatically generated files
 *.log
 
+# build directory
+/build
+
 # code coverage reports
 /coverage
 
