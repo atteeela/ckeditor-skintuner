@@ -17,8 +17,8 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 
 		fieldset
 		{
-			border: 2px dashed #d3d3d3;
-			border-radius: 5px;
+			border:2px dashed #d3d3d3;
+			border-radius:5px;
 			float:left;
 			margin:10px;
 			padding:15px;
@@ -62,6 +62,180 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			<div id="formatComboRTL" class="float"><label>Format Combo - in Hebrew (RTL)</label></div>
 		</fieldset>
 	</div>
-	<script src="components/requirejs/require.js" data-main="scripts/main.browser"></script>
+	<script data-role="ckeditor-skintuner-presentation" type="application/json">[
+		{
+			"element_id": "fullThemed",
+			"type": "themed",
+			"config": {
+				"language": "en",
+				"toolbarCanCollapse": true
+			}
+		},
+		{
+			"element_id": "fullThemedRTL",
+			"type": "themed",
+			"config": {
+				"language": "he",
+				"toolbarCanCollapse": true
+			}
+		},
+		{
+			"element_id": "basicThemed",
+			"type": "themed",
+			"config": {
+				"language": "en",
+				"removePlugins": "elementspath,resize",
+				"height": 50,
+				"toolbar": [
+					[ "Source", "-", "Bold", "Italic", "Underline" ]
+				]
+			}
+		},
+		{
+			"element_id": "basicThemedRTL",
+			"type": "themed",
+			"config": {
+				"language": "he",
+				"removePlugins": "elementspath,resize",
+				"height": 50,
+				"toolbar": [
+					[ "Source", "-", "Bold", "Italic", "Underline" ]
+				]
+			}
+		},
+		{
+			"element_id": "fullInline",
+			"type": "inline",
+			"config": {
+				"language": "en",
+				"toolbar": [
+					[ "Source", "-", "Bold", "Italic", "Underline" ],
+					[ "NumberedList", "BulletedList", "-", "Outdent", "Indent" ],
+					"/", [ "Styles", "About" ]
+				]
+			}
+		},
+		{
+			"element_id": "fullInlineRTL",
+			"type": "inline",
+			"config": {
+				"language": "he",
+				"toolbar": [
+					[ "Source", "-", "Bold", "Italic", "Underline" ],
+					[ "NumberedList", "BulletedList", "-", "Outdent", "Indent" ],
+					"/", [ "Styles", "About" ]
+				]
+			}
+		},
+		{
+			"element_id": "linkDialog",
+			"type": "dialog",
+			"dialog": {
+				"type": "link",
+				"tab": "default"
+			},
+			"config": {
+				"language": "en",
+				"extraPlugins": "link"
+			}
+		},
+		{
+			"element_id": "linkDialogAdvTab",
+			"type": "dialog",
+			"dialog": {
+				"type": "link",
+				"tab": "advanced"
+			},
+			"config": {
+				"language": "en",
+				"extraPlugins": "link"
+			}
+		},
+		{
+			"element_id": "linkDialogRTL",
+			"type": "dialog",
+			"dialog": {
+				"type": "link",
+				"tab": "default"
+			},
+			"config": {
+				"language": "he",
+				"extraPlugins": "link"
+			}
+		},
+		{
+			"element_id": "linkDialogRTLAdvTab",
+			"type": "dialog",
+			"dialog": {
+				"type": "link",
+				"tab": "advanced"
+			},
+			"config": {
+				"language": "he",
+				"extraPlugins": "link"
+			}
+		},
+		{
+			"element_id": "stylesCombo",
+			"type": "combo",
+			"combo": {
+				"name": "Styles",
+				"selected": "Red Title"
+			},
+			"config": {
+				"language": "en"
+			}
+		},
+		{
+			"element_id": "stylesComboRTL",
+			"type": "combo",
+			"combo": {
+				"name": "Styles",
+				"selected": "Red Title"
+			},
+			"config": {
+				"language": "he"
+			}
+		},
+		{
+			"element_id": "formatCombo",
+			"type": "combo",
+			"combo": {
+				"name": "Format",
+				"selected": "h3"
+			},
+			"config": {
+				"language": "en"
+			}
+		},
+		{
+			"element_id": "formatComboRTL",
+			"type": "combo",
+			"combo": {
+				"name": "Format",
+				"selected": "h3"
+			},
+			"config": {
+				"language": "he"
+			}
+		},
+		{
+			"element_id": "contextMenu",
+			"type": "menu",
+			"language": "en",
+			"menu": {
+				"items": "link(on),unlink(disabled),table,tabledelete,tablecell"
+			}
+		},
+		{
+			"element_id": "contextMenuRTL",
+			"type": "menu",
+			"language": "he",
+			"menu": {
+				"items": "link(on),unlink(disabled),table,tabledelete,tablecell"
+			}
+		}
+	]</script>
+	<script src="components/requirejs/require.js" data-main="build/2.0.0/scripts/bootstrap.browser"></script>
 </body>
 </html>

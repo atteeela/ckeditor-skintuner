@@ -1,120 +1,140 @@
-module.exports = function (grunt) {
-    "use strict";
+module.exports = function( grunt ) {
+	"use strict";
 
-    var defaultTasks,
-        path = require("path");
+	var // node modules
+	path = require( "path" ),
 
-    defaultTasks = ["jsbeautifier", "test"];
+		// configuration
+		pkg = grunt.file.readJSON( "package.json" ),
 
-    grunt.initConfig({
-        bower: grunt.file.readJSON("bower.json"),
-        pkg: grunt.file.readJSON("package.json"),
+		baseScriptsDirectory = "scripts",
+		mainModuleFileExtension,
+		mainModuleFileExtensionLength,
+		mainModulePathRelativeToBaseScriptsDirectory,
+		moduleRootGlobalPropertyName = "MODULE_ROOT";
 
-        // grunt-contrib-clean
-        clean: {
-            instrument: "<%= instrument.options.basePath %>"
-        },
+	mainModulePathRelativeToBaseScriptsDirectory = path.relative( baseScriptsDirectory, pkg.main );
+	mainModuleFileExtension = path.extname( mainModulePathRelativeToBaseScriptsDirectory );
+	mainModuleFileExtensionLength = mainModuleFileExtension.length;
+	mainModulePathRelativeToBaseScriptsDirectory = mainModulePathRelativeToBaseScriptsDirectory.substr( 0, mainModulePathRelativeToBaseScriptsDirectory.length - mainModuleFileExtensionLength );
+	mainModulePathRelativeToBaseScriptsDirectory = mainModulePathRelativeToBaseScriptsDirectory.replace( path.sep, "/" );
 
-        // grunt-contrib-jshint
-        jshint: {
-            files: [
-                "<%= instrument.files %>",
-                "<%= nodeunit.files %>",
-                "gruntfile.js"
-            ],
-            options: grunt.file.readJSON(".jshintrc")
-        },
+	grunt.initConfig( {
+		bower: grunt.file.readJSON( "bower.json" ),
+		pkg: pkg,
 
-        // grunt-contrib-nodeunit
-        nodeunit: {
-            files: ["tests/**/*Test.js"]
-        },
+		// grunt-contrib-clean
+		clean: {
+			instrument: "<%= instrument.options.basePath %>"
+		},
 
-        // grunt-contrib-watch
-        watch: {
-            files: ["<%= jshint.files %>"],
-            tasks: defaultTasks
-        },
+		// grunt-contrib-copy
+		copy: {
+			build: {
+				files: [ {
+					expand: true,
+					filter: 'isFile',
+					dest: "build/<%= pkg.version %>",
+					src: baseScriptsDirectory + "/*.js"
+				} ]
+			}
+		},
 
-        // grunt-istanbul
-        instrument: {
-            files: ["scripts/**/*.js"],
-            options: {
-                basePath: "coverage/instrument/"
-            }
-        },
-        storeCoverage: {
-            options: {
-                dir: "coverage/reports/<%= pkg.version %>"
-            }
-        },
-        makeReport: {
-            src: "<%= storeCoverage.options.dir %>/*.json",
-            options: {
-                type: "lcov",
-                dir: "<%= storeCoverage.options.dir %>",
-                print: "detail"
-            }
-        },
+		// grunt-contrib-jshint
+		jshint: {
+			files: [
+				"<%= instrument.files %>",
+				"<%= nodeunit.files %>",
+				"gruntfile.js"
+			],
+			options: grunt.file.readJSON( ".jshintrc" )
+		},
 
-        // grunt-jsbeautifier
-        jsbeautifier: {
-            files: ["<%= jshint.files %>"],
-            options: {
-                js: grunt.file.readJSON(".jsbeautifyrc")
-            }
-        },
+		// grunt-contrib-nodeunit
+		nodeunit: {
+			files: [ "tests/**/*Test.js" ]
+		},
 
-        // grunt-requirejs
-        requirejs: {
-            compile: {
-                options: {
-                    baseUrl: "scripts",
-                    generateSourceMaps: true,
-                    name: "<%= pkg.main %>",
-                    optimize: "uglify2",
-                    out: "build/<%= pkg.version %>/<%= pkg.name %>.js",
-                    preserveLicenseComments: false
-                }
-            }
-        }
-    });
+		// grunt-istanbul
+		instrument: {
+			files: [ baseScriptsDirectory + "/**/*.js" ],
+			options: {
+				basePath: "coverage/instrument/"
+			}
+		},
+		storeCoverage: {
+			options: {
+				dir: "coverage/reports/<%= pkg.version %>"
+			}
+		},
+		makeReport: {
+			src: "<%= storeCoverage.options.dir %>/*.json",
+			options: {
+				type: "lcov",
+				dir: "<%= storeCoverage.options.dir %>",
+				print: "detail"
+			}
+		},
 
-    // }, grunt.template.process("<%= requirejs.compile.options.baseUrl %>/../<%= pkg.main %>")));
+		// grunt-jsbeautifier
+		jsbeautifier: {
+			files: [ "<%= jshint.files %>" ],
+			options: {
+				js: grunt.file.readJSON( ".jsbeautifyrc" )
+			}
+		},
 
-    grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-contrib-jshint");
-    grunt.loadNpmTasks("grunt-contrib-nodeunit");
-    grunt.loadNpmTasks("grunt-contrib-watch");
-    grunt.loadNpmTasks("grunt-istanbul");
-    grunt.loadNpmTasks("grunt-jsbeautifier");
-    grunt.loadNpmTasks("grunt-requirejs");
+		// grunt-requirejs
+		requirejs: {
+			compile: {
+				options: {
+					baseUrl: baseScriptsDirectory,
+					generateSourceMaps: true,
+					name: mainModulePathRelativeToBaseScriptsDirectory,
+					optimize: "uglify2",
+					out: "build/<%= pkg.version %>/<%= pkg.main %>",
+					paths: {
+						"Bender/EventDispatcher/Event": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/Event",
+						"Bender/EventDispatcher/EventDispatcher": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/EventDispatcher"
+					},
+					preserveLicenseComments: false
+				}
+			}
+		}
+	} );
 
-    grunt.registerTask("register_globals", function (task) {
-        var moduleRoot,
-            moduleRootPropertyName = "MODULE_ROOT";
+	grunt.loadNpmTasks( "grunt-contrib-clean" );
+	grunt.loadNpmTasks( "grunt-contrib-copy" );
+	grunt.loadNpmTasks( "grunt-contrib-jshint" );
+	grunt.loadNpmTasks( "grunt-contrib-nodeunit" );
+	grunt.loadNpmTasks( "grunt-istanbul" );
+	grunt.loadNpmTasks( "grunt-jsbeautifier" );
+	grunt.loadNpmTasks( "grunt-requirejs" );
 
-        if (global.hasOwnProperty(moduleRootPropertyName)) {
-            return;
-        }
+	grunt.registerTask( "register_globals", function( task ) {
+		var moduleRoot;
 
-        if ("coverage" === task) {
-            moduleRoot = __dirname + "/" + grunt.template.process("<%= instrument.options.basePath %>");
-        } else if ("test" === task) {
-            moduleRoot = __dirname;
-        }
+		if ( global.hasOwnProperty( moduleRootGlobalPropertyName ) ) {
+			return;
+		}
 
-        Object.defineProperty(global, moduleRootPropertyName, {
-            enumerable: true,
-            value: moduleRoot
-        });
-    });
+		if ( "coverage" === task ) {
+			moduleRoot = __dirname + "/" + grunt.template.process( "<%= instrument.options.basePath %>" );
+		} else if ( "test" === task ) {
+			moduleRoot = __dirname;
+		}
 
-    grunt.registerTask("beautify", ["jsbeautifier"]);
-    grunt.registerTask("build", ["requirejs:compile"]);
-    grunt.registerTask("cover", ["register_globals:coverage", "clean:instrument", "instrument", "test", "storeCoverage", "makeReport"]);
-    grunt.registerTask("lint", ["jshint"]);
-    grunt.registerTask("test", ["register_globals:test", "lint", "nodeunit"]);
+		Object.defineProperty( global, moduleRootGlobalPropertyName, {
+			enumerable: true,
+			value: moduleRoot
+		} );
+	} );
 
-    grunt.registerTask("default", defaultTasks);
+	grunt.registerTask( "beautify", [ "jsbeautifier" ] );
+	grunt.registerTask( "build", [ "requirejs:compile", "copy:build" ] );
+	grunt.registerTask( "cover", [ "register_globals:coverage", "clean:instrument", "instrument", "test", "storeCoverage", "makeReport" ] );
+	grunt.registerTask( "lint", [ "jshint" ] );
+	grunt.registerTask( "test", [ "register_globals:test", "lint", "nodeunit" ] );
+
+	grunt.registerTask( "default", [ "jsbeautifier", "test" ] );
 };
