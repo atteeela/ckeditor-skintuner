@@ -9,39 +9,11 @@
 
 define( [
 	"Bender/EventDispatcher/EventDispatcher",
-	"CKEditor/SkinTuner/ConfigurationNormalizer"
-], function( EventDispatcher, ConfigurationNormalizer ) {
+	"CKEditor/SkinTuner/SkinTuner"
+], function( EventDispatcher, SkinTuner ) {
 
-	var configurationNormalizer = new ConfigurationNormalizer();
+	var skinTuner = new SkinTuner();
 
-	return {
-
-		/**
-		 * @param {CKEDITOR} CKEDITOR
-		 * @param {HTMLElement} container
-		 * @param {object} configuration
-		 * @param {array} configurations
-		 * @return {void}
-		 */
-		presentEditorElement: function( CKEDITOR, container, configurations, configuration ) {
-			configuration = configurationNormalizer.normalizeConfiguration( configuration );
-			console.log( configuration );
-		},
-
-		/**
-		 * @param {CKEDITOR} CKEDITOR
-		 * @param {HTMLElement} container
-		 * @param {array} configurations
-		 * @return {void}
-		 */
-		presentEditorElements: function( CKEDITOR, container, configurations ) {
-			var i;
-
-			for ( i = 0; i < configurations.length; i += 1 ) {
-				this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
-			}
-		}
-
-	};
+	return skinTuner;
 
 } );

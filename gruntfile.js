@@ -55,6 +55,12 @@ module.exports = function( grunt ) {
 			files: [ "tests/**/*Test.js" ]
 		},
 
+		// grunt-contrib-watch
+		watch: {
+			files: [ "<%= jshint.files %>" ],
+			tasks: [ "beautify", "lint", "build" ]
+		},
+
 		// grunt-istanbul
 		instrument: {
 			files: [ baseScriptsDirectory + "/**/*.js" ],
@@ -107,6 +113,7 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( "grunt-contrib-copy" );
 	grunt.loadNpmTasks( "grunt-contrib-jshint" );
 	grunt.loadNpmTasks( "grunt-contrib-nodeunit" );
+	grunt.loadNpmTasks( "grunt-contrib-watch" );
 	grunt.loadNpmTasks( "grunt-istanbul" );
 	grunt.loadNpmTasks( "grunt-jsbeautifier" );
 	grunt.loadNpmTasks( "grunt-requirejs" );

@@ -23,10 +23,6 @@
 			"../ckeditor.js"
 		];
 
-	require.config( {
-		baseUrl: "./scripts/"
-	} );
-
 	/**
 	 * @param {HTMLElement} container
 	 * @return {array}
