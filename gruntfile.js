@@ -101,6 +101,7 @@ module.exports = function( grunt ) {
 					out: "build/<%= pkg.version %>/<%= pkg.main %>",
 					paths: {
 						"Bender/EventDispatcher/Event": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/Event",
+						"Bender/EventDispatcher/EventAggregator": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/EventAggregator",
 						"Bender/EventDispatcher/EventDispatcher": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/EventDispatcher"
 					},
 					preserveLicenseComments: false

@@ -9,8 +9,10 @@
 
 define( [
 	"Bender/EventDispatcher/EventDispatcher/Repository",
-	"CKEditor/SkinTuner/ConfigurationNormalizer"
-], function( Repository, ConfigurationNormalizer ) {
+	"CKEditor/SkinTuner/ConfigurationNormalizer",
+	"CKEditor/SkinTuner/Presentation",
+	"CKEditor/SkinTuner/PresenterRepository"
+], function( Repository, ConfigurationNormalizer, Presentation, PresenterRepository ) {
 
 	var SkinTuner, // constructor, function
 
@@ -20,9 +22,8 @@ define( [
 	 * @constructor
 	 */
 	SkinTuner = function() {
-		Object.defineProperty( this, "partiallyCreatedEditorsRepository", {
-			value: new Repository()
-		} );
+		this.partiallyCreatedEditorsRepository = new Repository();
+		this.presenterRepository = new PresenterRepository();
 	};
 
 	/**
@@ -43,23 +44,30 @@ define( [
 	 * @param {array} configurations
 	 * @param {object} configuration
 	 * @return {void}
+	 * @throws {Error} if there is no presenter registered
 	 */
 	SkinTuner.prototype.presentEditorElement = function( CKEDITOR, container, configurations, configuration ) {
-		var partiallyCreatedEditorsRepository = this.partiallyCreatedEditorsRepository,
+		var editor,
+			partiallyCreatedEditorsRepository = this.partiallyCreatedEditorsRepository,
+			presentation,
+			presenter,
 			that = this;
 
 		configuration = configurationNormalizer.normalizeConfiguration( configuration, container );
+		presenter = this.presenterRepository.findOneByType( configuration.type );
+		if ( !presenter ) {
+			throw new Error( "There is no presenter registered for type: " + configuration.type );
+		}
 
-		setTimeout( function() {
-			var editor = CKEDITOR.appendTo( configuration.element, configuration.config );
+		presentation = presenter.present( CKEDITOR, configuration.element, configuration.config );
 
-			partiallyCreatedEditorsRepository.add( editor );
+		editor = presentation.getEditor();
+		partiallyCreatedEditorsRepository.add( editor );
 
-			editor.on( 'instanceReady', function() {
-				partiallyCreatedEditorsRepository.remove( editor );
-				that.onEditorReady( CKEDITOR, container, configurations, configuration, editor );
-			} );
-		}, 0 );
+		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
+			partiallyCreatedEditorsRepository.remove( editor );
+			that.onEditorReady( CKEDITOR, container, configurations, configuration, editor );
+		} );
 	};
 
 	/**
