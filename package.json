@@ -16,7 +16,7 @@
         "test": "grunt test"
     },
     "dependencies": {
-        "event-dispatcher": "~1.0"
+        "event-dispatcher": "~1.1"
     },
     "devDependencies": {
         "grunt": "~0.4",

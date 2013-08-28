@@ -9,6 +9,8 @@
 	"use strict";
 
 	var editorScriptElement,
+		emergencyTimeoutThatAwaitsForEditorToBeLoadedId,
+		emergencyTimeoutThatAwaitsForEditorToBeLoadedTimeout = 1000,
 		initializeEditor, // private, function
 		insertTimeout = 10,
 		findPresentationConfigurations, // private, function
@@ -70,13 +72,12 @@
 	 */
 	onEditorInitialized = function( CKEDITOR, skintuner ) {
 		var configurations,
-			container = document.body,
-			i;
+			container = document.body;
+
+		clearTimeout( emergencyTimeoutThatAwaitsForEditorToBeLoadedId );
 
 		configurations = findPresentationConfigurations( container );
-		for ( i = 0; i < configurations.length; i += 1 ) {
-			skintuner.presentEditorElements( CKEDITOR, container, configurations[ i ] );
-		}
+		skintuner.presentEditorElements( CKEDITOR, container, configurations );
 	};
 
 	/**
@@ -87,6 +88,13 @@
 		return JSON.parse( script.innerHTML );
 	};
 
+	emergencyTimeoutThatAwaitsForEditorToBeLoadedId = setTimeout( function() {
+		// editor is not loaded for too long, probably there is some random
+		// network error
+		window.location.reload();
+		window.location.href = window.location.href;
+	}, emergencyTimeoutThatAwaitsForEditorToBeLoadedTimeout );
+
 	setTimeout( initializeEditor, 0 );
 
 	require( [ "modules/ckeditor-skintuner" ], function( skintuner ) {
@@ -95,13 +103,17 @@
 			arbitraryIntervalThatAwaitsForCKEditorToBeReadyTimeout = 10;
 
 		arbitraryIntervalThatAwaitsForCKEditorToBeReadyId = setInterval( function() {
-			if ( !window.CKEDITOR ) {
+			var CKEDITOR = window.CKEDITOR;
+
+			if ( !CKEDITOR || !CKEDITOR.on ) {
 				return;
 			}
 
 			clearInterval( arbitraryIntervalThatAwaitsForCKEditorToBeReadyId );
 
-			onEditorInitialized( window.CKEDITOR, skintuner );
+			CKEDITOR.on( 'loaded', function() {
+				onEditorInitialized( CKEDITOR, skintuner );
+			} );
 		}, arbitraryIntervalThatAwaitsForCKEditorToBeReadyTimeout );
 
 	} );
