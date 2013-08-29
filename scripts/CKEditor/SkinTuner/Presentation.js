@@ -12,7 +12,19 @@ define( [
 	"Bender/EventDispatcher/EventDispatcher"
 ], function( Event, EventDispatcher ) {
 
-	var Presentation; // constructor, function
+	var Presentation, // constructor, function
+		createPresentationEvent; // private, function
+
+	/**
+	 * @Param {CKEditor/SkinTuner/Presentation} presentation
+	 * @return {Bender/EventDispatcher/Event}
+	 */
+	createPresentationEvent = function( presentation ) {
+		return new Event( {
+			editor: presentation.editor,
+			presentation: presentation
+		} );
+	};
 
 	/**
 	 * @auguments Bender/EventDispatcher/EventDispatcher
@@ -26,13 +38,9 @@ define( [
 
 		this.editor = editor;
 
-		if ( "ready" === editor.state ) {
-			this.notifyEditorReady();
-		} else {
-			editor.on( 'instanceReady', function() {
-				that.notifyEditorReady();
-			} );
-		}
+		editor.on( 'instanceReady', function() {
+			that.notifyEditorReady();
+		} );
 	};
 	Presentation.prototype = Object.create( EventDispatcher.prototype );
 
@@ -45,6 +53,11 @@ define( [
 	 * @constant {string}
 	 */
 	Presentation.EVENT_PRESENTATION_DONE = "presentation.done";
+
+	/**
+	 * @constant {string}
+	 */
+	Presentation.EVENT_PRESENTATION_START = "presentation.start";
 
 	/**
 	 * @return {void}
@@ -66,7 +79,8 @@ define( [
 	Presentation.prototype.getSupportedEvents = function() {
 		return [
 			Presentation.EVENT_EDITOR_READY,
-			Presentation.EVENT_PRESENTATION_DONE
+			Presentation.EVENT_PRESENTATION_DONE,
+			Presentation.EVENT_PRESENTATION_START
 		];
 	};
 
@@ -75,29 +89,30 @@ define( [
 	 * @return {void}
 	 */
 	Presentation.prototype.notifyEditorReady = function() {
-		this.dispatch( Presentation.EVENT_EDITOR_READY, new Event( {
-			editor: this.editor,
-			presentation: this
-		} ) );
+		this.dispatch( Presentation.EVENT_EDITOR_READY, createPresentationEvent( this ) );
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/Presentation#EVENT_EDITOR_READY
+	 * @fires CKEditor/SkinTuner/Presentation#EVENT_PRESENTATION_DONE
 	 * @return {void}
 	 */
 	Presentation.prototype.notifyPresentationDone = function() {
-		this.dispatch( Presentation.EVENT_PRESENTATION_DONE, new Event( {
-			editor: this.editor,
-			presentation: this
-		} ) );
+		this.dispatch( Presentation.EVENT_PRESENTATION_DONE, createPresentationEvent( this ) );
 	};
 
 	/**
-	 * @param {CKEditor/SkinTuner/Presenter} presenter
+	 * @fires CKEditor/SkinTuner/Presentation#EVENT_PRESENTATION_START
 	 * @return {void}
 	 */
-	Presentation.prototype.process = function( presenter ) {
-		presenter.processEditor( this, this.editor );
+	Presentation.prototype.notifyPresentationStart = function() {
+		this.dispatch( Presentation.EVENT_PRESENTATION_START, createPresentationEvent( this ) );
+	};
+
+	/**
+	 * @return {void}
+	 */
+	Presentation.prototype.start = function() {
+		this.notifyPresentationStart();
 	};
 
 	return Presentation;

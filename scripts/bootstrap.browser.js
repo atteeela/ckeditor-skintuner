@@ -12,7 +12,7 @@
 		emergencyTimeoutThatAwaitsForEditorToBeLoadedId,
 		emergencyTimeoutThatAwaitsForEditorToBeLoadedTimeout = 1000,
 		initializeEditor, // private, function
-		insertTimeout = 10,
+		insertTimeout = 100,
 		findPresentationConfigurations, // private, function
 		onEditorInitialized, // private, function
 		parsePresentationConfigurationScript, // private, function

@@ -8,29 +8,16 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/EventDispatcher",
 	"CKEditor/SkinTuner/Presentation"
-], function( EventDispatcher, Presentation ) {
+], function( Presentation ) {
 
 	var Presenter; // constructor, function
 
 	/**
 	 * @abstract
-	 * @auguments Bender/EventDispatcher/EventDispatcher
 	 * @constructor
 	 */
-	Presenter = function() {
-		EventDispatcher.call( this );
-	};
-	Presenter.prototype = Object.create( EventDispatcher.prototype );
-
-	Object.defineProperty( Presenter, "EVENT_PRESENTATION_START", {
-		value: "presentation.start"
-	} );
-
-	Object.defineProperty( Presenter, "EVENT_PRESENTATION_STOP", {
-		value: "presentation.stop"
-	} );
+	Presenter = function() {};
 
 	/**
 	 * @param {CKEDITOR} CKEDITOR
@@ -40,16 +27,6 @@ define( [
 	 */
 	Presenter.prototype.createEditor = function( CKEDITOR, container, editorConfiguration ) {
 		return CKEDITOR.appendTo( container, editorConfiguration );
-	};
-
-	/**
-	 * @return {array}
-	 */
-	Presenter.prototype.getSupportedEvents = function() {
-		return [
-			Presenter.EVENT_PRESENTATION_START,
-			Presenter.EVENT_PRESENTATION_STOP
-		];
 	};
 
 	/**
@@ -75,24 +52,28 @@ define( [
 	 * @return {CKEditor/SkinTuner/Presentation}
 	 */
 	Presenter.prototype.present = function( CKEDITOR, container, editorConfiguration ) {
-		var presentation = new Presentation( this.createEditor( CKEDITOR, container, editorConfiguration ) ),
+		var editor = this.createEditor( CKEDITOR, container, editorConfiguration ),
+			presentation = new Presentation( editor ),
 			that = this;
 
-		setTimeout( function() {
-			presentation.process( that );
-		}, 0 );
+		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
+			presentation.start();
+			that.processEditor( CKEDITOR, presentation, editor );
+		} );
 
 		return presentation;
 	};
 
 	/**
 	 * @param {CKEDITOR} CKEDITOR
-	 * @param {HTMLElement} container
-	 * @param {object} editorConfiguration
+	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {Editor} editor
 	 * @return {void}
 	 */
-	Presenter.prototype.processEditor = function( presentation, editor ) {
-		presentation.done();
+	Presenter.prototype.processEditor = function( CKEDITOR, presentation, editor ) {
+		setTimeout( function() {
+			presentation.done();
+		}, 1000 );
 	};
 
 	return Presenter;

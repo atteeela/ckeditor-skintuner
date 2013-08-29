@@ -10,6 +10,7 @@
 define( [
 	"Bender/EventDispatcher/EventDispatcher/Repository",
 	"CKEditor/SkinTuner/IdlenessMonitor",
+	"CKEditor/SkinTuner/Presentation",
 	"CKEditor/SkinTuner/Presenter",
 	"CKEditor/SkinTuner/Presenter/Dialog",
 	"CKEditor/SkinTuner/Presenter/InlineEditor",
@@ -18,7 +19,7 @@ define( [
 	"CKEditor/SkinTuner/Presenter/ThemedEditor",
 	"CKEditor/SkinTuner/SkinTuner",
 	"CKEditor/SkinTuner/SplashScreen"
-], function( Repository, IdlenessMonitor, Presenter, DialogPresenter, InlineEditorPresenter, MenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen ) {
+], function( Repository, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, MenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen ) {
 
 	var createTotalPercentageMessage, // private, function
 		dialogPresenter = new DialogPresenter(),
@@ -74,11 +75,11 @@ define( [
 
 		idlenessMonitor = new IdlenessMonitor( skinTuner );
 
-		idlenessMonitor.addListener( IdlenessMonitor.EVENT_BUSY, function() {
+		idlenessMonitor.addListener( IdlenessMonitor.EVENT_SKINTUNER_BUSY, function() {
 			splashScreen.show();
 		} );
 
-		idlenessMonitor.addListener( IdlenessMonitor.EVENT_IDLE, function() {
+		idlenessMonitor.addListener( IdlenessMonitor.EVENT_SKINTUNER_IDLE, function() {
 			splashScreen.hide();
 		} );
 
@@ -89,10 +90,10 @@ define( [
 		presenterRepository.add( richComboPresenter );
 		presenterRepository.add( themedEditorPresenter );
 
-		presenterRepository.addListener( Presenter.EVENT_PRESENTATION_STOP, onActionProcessed );
-
 		partiallyCreatedEditorsRepository = skinTuner.partiallyCreatedEditorsRepository;
 		partiallyCreatedEditorsRepository.addListener( Repository.EVENT_ITEM_REMOVED, onActionProcessed );
+
+		skinTuner.presentationRepository.addListener( Presentation.EVENT_PRESENTATION_DONE, onActionProcessed );
 
 		for ( i = 0; i < configurations.length; i += 1 ) {
 			totalActions += ( 2 * configurations[ i ].length );

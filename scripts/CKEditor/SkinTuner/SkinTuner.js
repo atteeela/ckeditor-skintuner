@@ -11,8 +11,9 @@ define( [
 	"Bender/EventDispatcher/EventDispatcher/Repository",
 	"CKEditor/SkinTuner/ConfigurationNormalizer",
 	"CKEditor/SkinTuner/Presentation",
+	"CKEditor/SkinTuner/PresentationRepository",
 	"CKEditor/SkinTuner/PresenterRepository"
-], function( Repository, ConfigurationNormalizer, Presentation, PresenterRepository ) {
+], function( Repository, ConfigurationNormalizer, Presentation, PresentationRepository, PresenterRepository ) {
 
 	var SkinTuner, // constructor, function
 
@@ -23,6 +24,7 @@ define( [
 	 */
 	SkinTuner = function() {
 		this.partiallyCreatedEditorsRepository = new Repository();
+		this.presentationRepository = new PresentationRepository();
 		this.presenterRepository = new PresenterRepository();
 	};
 
@@ -43,12 +45,13 @@ define( [
 	 * @param {HTMLElement} container
 	 * @param {array} configurations
 	 * @param {object} configuration
-	 * @return {void}
+	 * @return {CKEditor/SkinTuner/Presentation}
 	 * @throws {Error} if there is no presenter registered
 	 */
 	SkinTuner.prototype.presentEditorElement = function( CKEDITOR, container, configurations, configuration ) {
 		var editor,
 			partiallyCreatedEditorsRepository = this.partiallyCreatedEditorsRepository,
+			presentationRepository = this.presentationRepository,
 			presentation,
 			presenter,
 			that = this;
@@ -62,12 +65,16 @@ define( [
 		presentation = presenter.present( CKEDITOR, configuration.element, configuration.config );
 
 		editor = presentation.getEditor();
-		partiallyCreatedEditorsRepository.add( editor );
 
+		partiallyCreatedEditorsRepository.add( editor );
 		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
 			partiallyCreatedEditorsRepository.remove( editor );
 			that.onEditorReady( CKEDITOR, container, configurations, configuration, editor );
 		} );
+
+		presentationRepository.add( presentation );
+
+		return presentation;
 	};
 
 	/**

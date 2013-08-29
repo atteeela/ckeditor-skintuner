@@ -8,20 +8,20 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/EventAggregator",
+	"Bender/EventDispatcher/EventDispatcher/Repository",
 	"CKEditor/SkinTuner/Presenter"
-], function( EventAggregator, Presenter ) {
+], function( Repository, Presenter ) {
 
 	var PresenterRepository; // constructor, function
 
 	/**
-	 * @auguments Bender/EventDispatcher/EventAggregator
+	 * @auguments Bender/EventDispatcher/EventDispatcher/Repository
 	 * @constructor
 	 */
 	PresenterRepository = function() {
-		EventAggregator.call( this );
+		Repository.call( this );
 	};
-	PresenterRepository.prototype = Object.create( EventAggregator.prototype );
+	PresenterRepository.prototype = Object.create( Repository.prototype );
 
 	/**
 	 * @param {string} type

@@ -11,8 +11,9 @@ define( [
 	"Bender/EventDispatcher/Event",
 	"Bender/EventDispatcher/EventDispatcher",
 	"Bender/EventDispatcher/EventDispatcher/Repository",
+	"CKEditor/SkinTuner/Presentation",
 	"CKEditor/SkinTuner/SkinTuner"
-], function( Event, EventDispatcher, Repository, SkinTuner ) {
+], function( Event, EventDispatcher, Repository, Presentation, SkinTuner ) {
 
 	var IdlenessMonitor, // constructor, function
 
@@ -38,7 +39,9 @@ define( [
 	IdlenessMonitor = function( skinTuner ) {
 		EventDispatcher.call( this );
 
-		var that = this;
+		var onBusynessDecrease,
+			onBusynessIncrease,
+			that = this;
 
 		if ( !( skinTuner instanceof SkinTuner ) ) {
 			throw new Error( "Expected SkinTuner as an argument." );
@@ -46,26 +49,37 @@ define( [
 
 		this.busyness = 0;
 
-		skinTuner.partiallyCreatedEditorsRepository.addListener( Repository.EVENT_REPOSITORY_EMPTY, function() {
-			that.onEditorsBuildingStop( skinTuner );
-		} );
+		/**
+		 * @return {void}
+		 */
+		onBusynessDecrease = function() {
+			that.onBusynessDecrease( skinTuner );
+		};
 
-		skinTuner.partiallyCreatedEditorsRepository.addListener( Repository.EVENT_REPOSITORY_NOT_EMPTY, function() {
-			that.onEditorsBuildingStart( skinTuner );
-		} );
+		/**
+		 * @return {void}
+		 */
+		onBusynessIncrease = function() {
+			that.onBusynessIncrease( skinTuner );
+		};
+
+		skinTuner.partiallyCreatedEditorsRepository.addListener( Repository.EVENT_REPOSITORY_EMPTY, onBusynessDecrease );
+		skinTuner.partiallyCreatedEditorsRepository.addListener( Repository.EVENT_REPOSITORY_NOT_EMPTY, onBusynessIncrease );
+		skinTuner.presentationRepository.addListener( Presentation.EVENT_PRESENTATION_DONE, onBusynessDecrease );
+		skinTuner.presentationRepository.addListener( Presentation.EVENT_PRESENTATION_START, onBusynessIncrease );
 	};
 	IdlenessMonitor.prototype = Object.create( EventDispatcher.prototype );
 
-	IdlenessMonitor.EVENT_BUSY = "busy";
-	IdlenessMonitor.EVENT_IDLE = "idle";
+	IdlenessMonitor.EVENT_SKINTUNER_BUSY = "busy";
+	IdlenessMonitor.EVENT_SKINTUNER_IDLE = "idle";
 
 	/**
 	 * @return {array}
 	 */
 	IdlenessMonitor.prototype.getSupportedEvents = function() {
 		return [
-			IdlenessMonitor.EVENT_BUSY,
-			IdlenessMonitor.EVENT_IDLE
+			IdlenessMonitor.EVENT_SKINTUNER_BUSY,
+			IdlenessMonitor.EVENT_SKINTUNER_IDLE
 		];
 	};
 
@@ -82,7 +96,7 @@ define( [
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.notifyBusy = function( skinTuner ) {
-		this.dispatch( IdlenessMonitor.EVENT_BUSY, createIdlenessEvent( this, skinTuner ) );
+		this.dispatch( IdlenessMonitor.EVENT_SKINTUNER_BUSY, createIdlenessEvent( this, skinTuner ) );
 	};
 
 	/**
@@ -91,18 +105,18 @@ define( [
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.notifyIdle = function( skinTuner ) {
-		this.dispatch( IdlenessMonitor.EVENT_IDLE, createIdlenessEvent( this, skinTuner ) );
+		this.dispatch( IdlenessMonitor.EVENT_SKINTUNER_IDLE, createIdlenessEvent( this, skinTuner ) );
 	};
 
 	/**
 	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
 	 * @return {void}
 	 */
-	IdlenessMonitor.prototype.onEditorsBuildingStart = function( skinTuner ) {
-		this.busyness += 1;
+	IdlenessMonitor.prototype.onBusynessDecrease = function( skinTuner ) {
+		this.busyness -= 1;
 
-		if ( 1 === this.busyness ) {
-			this.notifyBusy( skinTuner );
+		if ( 0 === this.busyness ) {
+			this.notifyIdle( skinTuner );
 		}
 	};
 
@@ -110,11 +124,11 @@ define( [
 	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
 	 * @return {void}
 	 */
-	IdlenessMonitor.prototype.onEditorsBuildingStop = function( skinTuner ) {
-		this.busyness -= 1;
+	IdlenessMonitor.prototype.onBusynessIncrease = function( skinTuner ) {
+		this.busyness += 1;
 
-		if ( 0 === this.busyness ) {
-			this.notifyIdle( skinTuner );
+		if ( 1 === this.busyness ) {
+			this.notifyBusy( skinTuner );
 		}
 	};
 
