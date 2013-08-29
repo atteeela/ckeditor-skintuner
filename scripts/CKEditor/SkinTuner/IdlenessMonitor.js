@@ -70,16 +70,16 @@ define( [
 	};
 	IdlenessMonitor.prototype = Object.create( EventDispatcher.prototype );
 
-	IdlenessMonitor.EVENT_SKINTUNER_BUSY = "busy";
-	IdlenessMonitor.EVENT_SKINTUNER_IDLE = "idle";
+	IdlenessMonitor.EVENT_BUSY = "busy";
+	IdlenessMonitor.EVENT_IDLE = "idle";
 
 	/**
 	 * @return {array}
 	 */
 	IdlenessMonitor.prototype.getSupportedEvents = function() {
 		return [
-			IdlenessMonitor.EVENT_SKINTUNER_BUSY,
-			IdlenessMonitor.EVENT_SKINTUNER_IDLE
+			IdlenessMonitor.EVENT_BUSY,
+			IdlenessMonitor.EVENT_IDLE
 		];
 	};
 
@@ -96,7 +96,7 @@ define( [
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.notifyBusy = function( skinTuner ) {
-		this.dispatch( IdlenessMonitor.EVENT_SKINTUNER_BUSY, createIdlenessEvent( this, skinTuner ) );
+		this.dispatch( IdlenessMonitor.EVENT_BUSY, createIdlenessEvent( this, skinTuner ) );
 	};
 
 	/**
@@ -105,7 +105,7 @@ define( [
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.notifyIdle = function( skinTuner ) {
-		this.dispatch( IdlenessMonitor.EVENT_SKINTUNER_IDLE, createIdlenessEvent( this, skinTuner ) );
+		this.dispatch( IdlenessMonitor.EVENT_IDLE, createIdlenessEvent( this, skinTuner ) );
 	};
 
 	/**

@@ -68,7 +68,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			<br style="clear:both;">
 			<div id="stylesCombo" class="float"><label>Styles Combo</label></div>
 			<div id="stylesComboRTL" class="float"><label>Styles Combo - in Hebrew (RTL)</label></div>
-			<div id="formatCombo" class="float"><label>Format Combo - in Hebrew (RTL)</label></div>
+			<div id="formatCombo" class="float"><label>Format Combo</label></div>
 			<div id="formatComboRTL" class="float"><label>Format Combo - in Hebrew (RTL)</label></div>
 		</fieldset>
 	</div>
@@ -188,7 +188,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		{
 			"element_id": "stylesCombo",
 			"type": "richcombo",
-			"combo": {
+			"richcombo": {
 				"name": "Styles",
 				"selected": "Red Title"
 			},
@@ -199,7 +199,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		{
 			"element_id": "stylesComboRTL",
 			"type": "richcombo",
-			"combo": {
+			"richcombo": {
 				"name": "Styles",
 				"selected": "Red Title"
 			},
@@ -210,7 +210,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		{
 			"element_id": "formatCombo",
 			"type": "richcombo",
-			"combo": {
+			"richcombo": {
 				"name": "Format",
 				"selected": "h3"
 			},
@@ -221,7 +221,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		{
 			"element_id": "formatComboRTL",
 			"type": "richcombo",
-			"combo": {
+			"richcombo": {
 				"name": "Format",
 				"selected": "h3"
 			},
@@ -231,18 +231,22 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		},
 		{
 			"element_id": "contextMenu",
-			"type": "menu",
-			"language": "en",
-			"menu": {
+			"type": "contextmenu",
+			"contextmenu": {
 				"items": "link(on),unlink(disabled),table,tabledelete,tablecell"
+			},
+			"config": {
+				"language": "en"
 			}
 		},
 		{
 			"element_id": "contextMenuRTL",
-			"type": "menu",
-			"language": "he",
-			"menu": {
+			"type": "contextmenu",
+			"contextmenu": {
 				"items": "link(on),unlink(disabled),table,tabledelete,tablecell"
+			},
+			"config": {
+				"language": "he"
 			}
 		}
 	]</script>

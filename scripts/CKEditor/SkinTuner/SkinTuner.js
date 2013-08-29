@@ -33,18 +33,6 @@ define( [
 	 * @param {HTMLElement} container
 	 * @param {array} configurations
 	 * @param {object} configuration
-	 * @param {Editor} editor
-	 * @return {void}
-	 */
-	SkinTuner.prototype.onEditorReady = function( CKEDITOR, container, configurations, configuration, editor ) {
-		console.log( configuration );
-	};
-
-	/**
-	 * @param {CKEDITOR} CKEDITOR
-	 * @param {HTMLElement} container
-	 * @param {array} configurations
-	 * @param {object} configuration
 	 * @return {CKEditor/SkinTuner/Presentation}
 	 * @throws {Error} if there is no presenter registered
 	 */
@@ -53,8 +41,8 @@ define( [
 			partiallyCreatedEditorsRepository = this.partiallyCreatedEditorsRepository,
 			presentationRepository = this.presentationRepository,
 			presentation,
-			presenter,
-			that = this;
+			presentationConfiguration = {},
+			presenter;
 
 		configuration = configurationNormalizer.normalizeConfiguration( configuration, container );
 		presenter = this.presenterRepository.findOneByType( configuration.type );
@@ -62,14 +50,16 @@ define( [
 			throw new Error( "There is no presenter registered for type: " + configuration.type );
 		}
 
-		presentation = presenter.present( CKEDITOR, configuration.element, configuration.config );
+		if ( configuration.hasOwnProperty( configuration.type ) ) {
+			presentationConfiguration = configuration[ configuration.type ];
+		}
+		presentation = presenter.present( CKEDITOR, configuration.element, presentationConfiguration, configuration.config );
 
 		editor = presentation.getEditor();
 
 		partiallyCreatedEditorsRepository.add( editor );
 		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
 			partiallyCreatedEditorsRepository.remove( editor );
-			that.onEditorReady( CKEDITOR, container, configurations, configuration, editor );
 		} );
 
 		presentationRepository.add( presentation );

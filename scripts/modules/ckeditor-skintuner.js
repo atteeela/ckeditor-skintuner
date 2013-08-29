@@ -14,18 +14,18 @@ define( [
 	"CKEditor/SkinTuner/Presenter",
 	"CKEditor/SkinTuner/Presenter/Dialog",
 	"CKEditor/SkinTuner/Presenter/InlineEditor",
-	"CKEditor/SkinTuner/Presenter/Menu",
+	"CKEditor/SkinTuner/Presenter/ContextMenu",
 	"CKEditor/SkinTuner/Presenter/RichCombo",
 	"CKEditor/SkinTuner/Presenter/ThemedEditor",
 	"CKEditor/SkinTuner/SkinTuner",
 	"CKEditor/SkinTuner/SplashScreen"
-], function( Repository, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, MenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen ) {
+], function( Repository, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen ) {
 
-	var createTotalPercentageMessage, // private, function
+	var contextMenuPresenter = new ContextMenuPresenter(),
+		createTotalPercentageMessage, // private, function
 		dialogPresenter = new DialogPresenter(),
 		handleProcessedActions, // private, function
 		inlineEditorPresenter = new InlineEditorPresenter(),
-		menuPresenter = new MenuPresenter(),
 		presentEditorElements, // function
 		richComboPresenter = new RichComboPresenter(),
 		themedEditorPresenter = new ThemedEditorPresenter();
@@ -75,18 +75,18 @@ define( [
 
 		idlenessMonitor = new IdlenessMonitor( skinTuner );
 
-		idlenessMonitor.addListener( IdlenessMonitor.EVENT_SKINTUNER_BUSY, function() {
+		idlenessMonitor.addListener( IdlenessMonitor.EVENT_BUSY, function() {
 			splashScreen.show();
 		} );
 
-		idlenessMonitor.addListener( IdlenessMonitor.EVENT_SKINTUNER_IDLE, function() {
+		idlenessMonitor.addListener( IdlenessMonitor.EVENT_IDLE, function() {
 			splashScreen.hide();
 		} );
 
 		presenterRepository = skinTuner.presenterRepository;
+		presenterRepository.add( contextMenuPresenter );
 		presenterRepository.add( dialogPresenter );
 		presenterRepository.add( inlineEditorPresenter );
-		presenterRepository.add( menuPresenter );
 		presenterRepository.add( richComboPresenter );
 		presenterRepository.add( themedEditorPresenter );
 
