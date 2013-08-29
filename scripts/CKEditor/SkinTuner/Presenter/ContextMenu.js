@@ -42,12 +42,11 @@ define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
 	 * @param {CKEDITOR.dom.element} container
 	 * @param {CKEditor/SkinTuner/Presentation} presentation
 	 * @param {Editor} editor
-	 * @param {CKEDITOR.plugins.contextMenu} menu
-	 * @param {array} menuItems
 	 * @param {CKEDITOR.ui.floatpanel} panel
 	 * @return {void}
+	 * @see CKEditor/SkinTuner/Presenter/RichCombo#onRichComboPanelReady
 	 */
-	ContextMenuPresenter.prototype.onMenuPanelReady = function( CKEDITOR, container, presentation, editor, menu, menuItems, panel ) {
+	ContextMenuPresenter.prototype.onMenuPanelReady = function( CKEDITOR, container, presentation, editor, panel ) {
 		this.createEditorPanelSnapshot( CKEDITOR, container.$, editor, panel );
 		this.destroyEditor( CKEDITOR, editor, presentation );
 	};
@@ -104,8 +103,6 @@ define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
 	 * @return {void}
 	 */
 	ContextMenuPresenter.prototype.presentEditor = function( CKEDITOR, container, presentation, presentationConfiguration, editor, editorConfiguration ) {
-		presentation.done();
-
 		var menu = editor.contextMenu,
 			menuItems = getMenuItemsFromPresentationConfiguration( presentationConfiguration ),
 			that = this;
@@ -113,7 +110,7 @@ define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
 		container = CKEDITOR.dom.element.get( container );
 
 		editor.once( 'panelShow', function( evt ) {
-			that.onMenuPanelReady( CKEDITOR, container, presentation, editor, menu, menuItems, evt.data );
+			that.onMenuPanelReady( CKEDITOR, container, presentation, editor, evt.data );
 		} );
 
 		menu._.onShow = function() {

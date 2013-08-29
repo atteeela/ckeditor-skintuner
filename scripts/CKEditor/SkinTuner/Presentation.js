@@ -37,6 +37,7 @@ define( [
 		var that = this;
 
 		this.editor = editor;
+		this.isDone = false;
 
 		editor.on( 'instanceReady', function() {
 			that.notifyEditorReady();
@@ -63,6 +64,7 @@ define( [
 	 * @return {void}
 	 */
 	Presentation.prototype.done = function() {
+		this.isDone = true;
 		this.notifyPresentationDone();
 	};
 

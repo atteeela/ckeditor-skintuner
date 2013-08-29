@@ -15,7 +15,7 @@ define( [
 		REGEXP_TAG_HEAD = ( /(?=<\/head>)/ ),
 		REGEXP_TAG_SCRIPT = ( /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi ),
 		clonePanel, // private, function
-		dumpPage, // private, function
+		dumpElementToString, // private, function
 		stripScripts; // private, function
 
 	/**
@@ -33,7 +33,7 @@ define( [
 		doc = panel.element.getFirst().getFrameDocument();
 		// element::clone doesn't handle iframe content,
 		// extract the iframe content manually.
-		panelHtml = dumpPage( CKEDITOR, doc );
+		panelHtml = dumpElementToString( CKEDITOR, doc );
 
 		el = panel.element.clone( 1 );
 		el.setStyles( {
@@ -58,7 +58,7 @@ define( [
 	 * @param {CKEDITOR.dom.element} doc
 	 * @return {string}
 	 */
-	dumpPage = function( CKEDITOR, doc ) {
+	dumpElementToString = function( CKEDITOR, doc ) {
 		var html;
 
 		if ( doc.equals( CKEDITOR.document ) ) {
@@ -66,6 +66,7 @@ define( [
 		} else {
 			html = doc.getBody().getHtml();
 		}
+		html = doc.getDocumentElement().getOuterHtml();
 
 		if ( CKEDITOR.env.gecko ) {
 			return stripScripts( html );
@@ -179,7 +180,16 @@ define( [
 
 		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
 			presentation.start();
-			that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, editor, editorConfiguration );
+			try {
+				that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, editor, editorConfiguration );
+			} catch ( e ) {
+				if ( !presentation.isDone ) {
+					// do not block other presentations
+					presentation.done();
+				}
+
+				throw e;
+			}
 		} );
 
 		return presentation;
