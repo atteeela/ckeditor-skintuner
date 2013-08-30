@@ -6,9 +6,11 @@
 "use strict";
 
 /* global define: false */
+/* jshint browser: true */
 
 define( [
 	"Bender/EventDispatcher/EventDispatcher/Repository",
+	"CKEditor/SkinTuner/ColorPicker",
 	"CKEditor/SkinTuner/IdlenessMonitor",
 	"CKEditor/SkinTuner/Presentation",
 	"CKEditor/SkinTuner/Presenter",
@@ -18,17 +20,21 @@ define( [
 	"CKEditor/SkinTuner/Presenter/RichCombo",
 	"CKEditor/SkinTuner/Presenter/ThemedEditor",
 	"CKEditor/SkinTuner/SkinTuner",
-	"CKEditor/SkinTuner/SplashScreen"
-], function( Repository, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen ) {
+	"CKEditor/SkinTuner/SplashScreen",
+	"CKEditor/SkinTuner/Toolbar"
+], function( Repository, ColorPicker, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen, Toolbar ) {
 
-	var contextMenuPresenter = new ContextMenuPresenter(),
+	var colorPicker = new ColorPicker(),
+		contextMenuPresenter = new ContextMenuPresenter(),
 		createTotalPercentageMessage, // private, function
 		dialogPresenter = new DialogPresenter(),
 		handleProcessedActions, // private, function
 		inlineEditorPresenter = new InlineEditorPresenter(),
+		onColorPicked, // private, function
 		presentEditorElements, // function
 		richComboPresenter = new RichComboPresenter(),
-		themedEditorPresenter = new ThemedEditorPresenter();
+		themedEditorPresenter = new ThemedEditorPresenter(),
+		toolbar = new Toolbar();
 
 	/**
 	 * @param {int} processed
@@ -53,9 +59,21 @@ define( [
 
 	/**
 	 * @param {CKEDITOR} CKEDITOR
+	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+	 * @param {string} color hex RGB with preceding hash
+	 * @return {void}
+	 */
+	onColorPicked = function( CKEDITOR, skinTuner, color ) {
+		skinTuner.editorsRepository.forEach( function( editor ) {
+			editor.setUiColor( color );
+		} );
+	};
+
+	/**
+	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
 	 * @param {array} configurations
-	 * @return {void}
+	 * @return {CKEditor/SkinTuner/SkinTuner}
 	 */
 	presentEditorElements = function( CKEDITOR, container, configurations ) {
 		var processedActions = 0,
@@ -99,11 +117,31 @@ define( [
 			totalActions += ( 2 * configurations[ i ].length );
 			skinTuner.presentEditorElements( CKEDITOR, container, configurations[ i ] );
 		}
+
+		return skinTuner;
 	};
 
 	return {
 
-		presentEditorElements: presentEditorElements
+		/**
+		 * @param {CKEDITOR} CKEDITOR
+		 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+		 * @param {HTMLElement} container
+		 * @return {void}
+		 */
+		appendToolbar: function( CKEDITOR, skinTuner, container ) {
+			toolbar.addListener( Toolbar.EVENT_TOOLBAR_READY, function( evt ) {
+				var colorPickerContainer = document.getElementById( "colorpicker" );
+
+				colorPicker.addListener( ColorPicker.EVENT_COLOR_PICKED, function( evt ) {
+					onColorPicked( CKEDITOR, skinTuner, evt.data.color );
+				} );
+				colorPicker.appendTo( CKEDITOR, colorPickerContainer );
+			} );
+			toolbar.appendTo( CKEDITOR, container );
+		},
+
+		presentEditorElements: presentEditorElements,
 
 	};
 

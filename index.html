@@ -29,11 +29,6 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			padding:15px;
 		}
 
-		#mask
-		{
-			cursor: wait;
-		}
-
 	</style>
 </head>
 <body>
@@ -141,7 +136,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			"element_id": "linkDialog",
 			"type": "dialog",
 			"dialog": {
-				"type": "link",
+				"name": "link",
 				"tab": "default"
 			},
 			"config": {
@@ -153,7 +148,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			"element_id": "linkDialogAdvTab",
 			"type": "dialog",
 			"dialog": {
-				"type": "link",
+				"name": "link",
 				"tab": "advanced"
 			},
 			"config": {
@@ -165,7 +160,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			"element_id": "linkDialogRTL",
 			"type": "dialog",
 			"dialog": {
-				"type": "link",
+				"name": "link",
 				"tab": "default"
 			},
 			"config": {
@@ -177,7 +172,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			"element_id": "linkDialogRTLAdvTab",
 			"type": "dialog",
 			"dialog": {
-				"type": "link",
+				"name": "link",
 				"tab": "advanced"
 			},
 			"config": {
@@ -249,5 +244,19 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		}
 	]</script>
 	<script src="components/requirejs/require.js" data-main="build/2.0.0/scripts/bootstrap.browser"></script>
+	<script type="text/html" data-template-id="toolbar">
+        <div class="toolbar">
+            <div id="intro" class="toolbox"><strong>SkinTuner</strong> - all editor skin parts in one place</div>
+            <div class="toolbox">
+            	<label for="colorpicker">UI Color: (c)</label>
+                <input id="colorpicker" title="Quick access to the Chameleon feature." value="" />
+                <div id="color-options">
+                    <a class="color" href="javascript:void(0)" title="Default"></a>
+                    <a class="color" href="javascript:void(0)" style="background:#99F299" title="Green"></a>
+                    <a class="color" href="javascript:void(0)" style="background:#FFCD69" title="Orange"></a>
+                </div>
+            </div>
+        </div>
+	</script>
 </body>
 </html>

@@ -15,6 +15,7 @@
 		insertTimeout = 100,
 		findPresentationConfigurations, // private, function
 		onEditorInitialized, // private, function
+		overwriteKeyGenerator, // private, function
 		parsePresentationConfigurationScript, // private, function
 		possibleEditorLocations = [
 			// skintuner is most probably placed inside /dev/skintuner
@@ -72,12 +73,45 @@
 	 */
 	onEditorInitialized = function( CKEDITOR, skintuner ) {
 		var configurations,
-			container = document.body;
+			container = document.body,
+			skinTuner;
 
 		clearTimeout( emergencyTimeoutThatAwaitsForEditorToBeLoadedId );
 
+		overwriteKeyGenerator( CKEDITOR );
+
 		configurations = findPresentationConfigurations( container );
-		skintuner.presentEditorElements( CKEDITOR, container, configurations );
+
+		skinTuner = skintuner.presentEditorElements( CKEDITOR, container, configurations );
+		skintuner.appendToolbar( CKEDITOR, skinTuner, container );
+	};
+
+	/**
+	 * Overwriting this function prevents CKEDITOR from caching panels and
+	 * dialogs UI elements.
+	 *
+	 * @param {CKEDITOR} CKEDITOR
+	 * @return {void}
+	 */
+	overwriteKeyGenerator = function( CKEDITOR ) {
+		var noCacheKey = 0,
+			previousGenKey = CKEDITOR.tools.genKey;
+
+		// this is an obsoluete function that ATM is called at two places in
+		// code
+		CKEDITOR.tools.genKey = function() {
+			var args = Array.prototype.slice.call( arguments );
+
+			// genkey is called at panel plugin - do not cache
+			// see: #10773
+			if ( args.length > 3 ) {
+				noCacheKey += 1;
+
+				return noCacheKey;
+			}
+
+			return previousGenKey.apply( this, args );
+		};
 	};
 
 	/**

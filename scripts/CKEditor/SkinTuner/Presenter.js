@@ -180,16 +180,8 @@ define( [
 
 		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
 			presentation.start();
-			try {
-				that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, editor, editorConfiguration );
-			} catch ( e ) {
-				if ( !presentation.isDone ) {
-					// do not block other presentations
-					presentation.done();
-				}
-
-				throw e;
-			}
+			// setTimeout( function() { editor.setUiColor( "#ffc000" ); }, 10000 );
+			that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, editor, editorConfiguration );
 		} );
 
 		return presentation;

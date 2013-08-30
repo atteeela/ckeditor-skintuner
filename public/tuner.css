@@ -3,14 +3,9 @@ Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.md or http://ckeditor.com/license
 */
 
-html, body
-{
-	overflow: hidden;
-}
-
 body
 {
-	font-family: Arial;
+	font-family: sans-serif;
 	font-size: 12px;
 }
 
@@ -69,6 +64,7 @@ body
 	padding: 8px;
 	font-size: 16px;
 	box-shadow: 0 0 5px #888;
+	z-index: 1;
 }
 
 .toolbox

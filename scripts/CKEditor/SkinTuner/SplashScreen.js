@@ -66,6 +66,7 @@ define( function() {
 			throw new Error( "Splash screen is not active." );
 		}
 
+		this.container.setStyle( "overflow", "scroll" );
 		this.mask.remove();
 
 		delete this.mask;
@@ -104,6 +105,7 @@ define( function() {
 		this.mask = this.createDocumentMask( message );
 
 		this.container.show();
+		this.container.setStyle( "overflow", "hidden" );
 		this.container.setStyle( "visibility", "visible" );
 		this.container.append( this.mask );
 	};

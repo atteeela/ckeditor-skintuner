@@ -23,6 +23,7 @@ define( [
 	 * @constructor
 	 */
 	SkinTuner = function() {
+		this.editorsRepository = new Repository();
 		this.partiallyCreatedEditorsRepository = new Repository();
 		this.presentationRepository = new PresentationRepository();
 		this.presenterRepository = new PresenterRepository();
@@ -38,6 +39,7 @@ define( [
 	 */
 	SkinTuner.prototype.presentEditorElement = function( CKEDITOR, container, configurations, configuration ) {
 		var editor,
+			editorsRepository = this.editorsRepository,
 			partiallyCreatedEditorsRepository = this.partiallyCreatedEditorsRepository,
 			presentationRepository = this.presentationRepository,
 			presentation,
@@ -60,6 +62,7 @@ define( [
 		partiallyCreatedEditorsRepository.add( editor );
 		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
 			partiallyCreatedEditorsRepository.remove( editor );
+			editorsRepository.add( editor );
 		} );
 
 		presentationRepository.add( presentation );
