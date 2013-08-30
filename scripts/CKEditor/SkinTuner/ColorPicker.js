@@ -15,6 +15,7 @@ define( [
 
 	var ColorPicker, // constructor, function
 
+		ATTRIBUTE_COLORPICKER_COLOR = "data-colorpicker-color",
 		SCRIPT_COLORPICKER_SRC = "components/jscolor/jscolor.js",
 
 		arbitraryIntervalThatWaitsForJsColorToBeReadyId,
@@ -125,6 +126,21 @@ define( [
 
 		waitForJsColorToBeReady( this, function( jscolor ) {
 			initializeJsColor( that, CKEDITOR, container, jscolor );
+			CKEDITOR.document.on( "click", function( evt ) {
+				var color,
+					target = CKEDITOR.dom.element.get( evt.data.$.target );
+
+				if ( !target.hasAttribute( ATTRIBUTE_COLORPICKER_COLOR ) ) {
+					return;
+				}
+
+				color = target.getAttribute( ATTRIBUTE_COLORPICKER_COLOR );
+
+				container.setValue( color );
+				jscolor.importColor();
+
+				that.onColorPicked( CKEDITOR, container.$, color );
+			} );
 		} );
 
 		container = CKEDITOR.dom.element.get( container );
@@ -150,10 +166,14 @@ define( [
 	 * @return {array}
 	 */
 	ColorPicker.prototype.notifyColorPicked = function( CKEDITOR, container, color ) {
-		var evt = createColorPickerEvent( CKEDITOR, container, color );
+		var evt = createColorPickerEvent( CKEDITOR, container, color ),
+			that = this;
 
 		evt.data.color = color;
-		this.dispatch( ColorPicker.EVENT_COLOR_PICKED, evt );
+
+		setTimeout( function() {
+			that.dispatch( ColorPicker.EVENT_COLOR_PICKED, evt );
+		}, 0 );
 	};
 
 	/**

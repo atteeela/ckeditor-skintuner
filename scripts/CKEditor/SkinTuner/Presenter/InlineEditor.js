@@ -21,13 +21,6 @@ define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
 	InlineEditorPresenter.prototype = Object.create( Presenter.prototype );
 
 	/**
-	 * @return {array}
-	 */
-	InlineEditorPresenter.prototype.getSupportedTypes = function() {
-		return [ 'inline' ];
-	};
-
-	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
 	 * @param {object} editorConfiguration
@@ -40,6 +33,13 @@ define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
 		container.append( element );
 
 		return CKEDITOR.inline( element, editorConfiguration );
+	};
+
+	/**
+	 * @return {array}
+	 */
+	InlineEditorPresenter.prototype.getSupportedTypes = function() {
+		return [ 'inline' ];
 	};
 
 	/**

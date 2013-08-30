@@ -83,11 +83,7 @@ define( [
 			that = this;
 
 		if ( tabName ) {
-			try {
-				dialog.selectPage( tabName );
-			} catch ( e ) {
-				// this does not seem to work always
-			}
+			dialog.selectPage( tabName );
 		}
 
 		container = CKEDITOR.dom.element.get( container );
@@ -107,7 +103,7 @@ define( [
 			// dialog.on( 'hide', ... ); seems not to work
 			container.append( clone );
 			that.onDialogHide( CKEDITOR, container.$, presentation, editor, tabName, dialog );
-		}, 10 );
+		}, 100 );
 	};
 
 	/**

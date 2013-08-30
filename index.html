@@ -30,6 +30,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 		}
 
 	</style>
+	<!--[if lt IE 9]>
+		<script src="components/html5shiv/html5shiv.js"></script>
+	<![endif]-->
 </head>
 <body>
 	<div>
@@ -137,7 +140,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			"type": "dialog",
 			"dialog": {
 				"name": "link",
-				"tab": "default"
+				"tab": "info"
 			},
 			"config": {
 				"language": "en",
@@ -152,8 +155,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				"tab": "advanced"
 			},
 			"config": {
+				"extraPlugins": "link",
 				"language": "en",
-				"extraPlugins": "link"
+				"removeDialogTabs": ""
 			}
 		},
 		{
@@ -161,7 +165,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			"type": "dialog",
 			"dialog": {
 				"name": "link",
-				"tab": "default"
+				"tab": "info"
 			},
 			"config": {
 				"language": "he",
@@ -176,8 +180,9 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 				"tab": "advanced"
 			},
 			"config": {
+				"extraPlugins": "link",
 				"language": "he",
-				"extraPlugins": "link"
+				"removeDialogTabs": ""
 			}
 		},
 		{
@@ -245,18 +250,19 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	]</script>
 	<script src="components/requirejs/require.js" data-main="build/2.0.0/scripts/bootstrap.browser"></script>
 	<script type="text/html" data-template-id="toolbar">
-        <div class="toolbar">
-            <div id="intro" class="toolbox"><strong>SkinTuner</strong> - all editor skin parts in one place</div>
-            <div class="toolbox">
-            	<label for="colorpicker">UI Color: (c)</label>
-                <input id="colorpicker" title="Quick access to the Chameleon feature." value="" />
-                <div id="color-options">
-                    <a class="color" href="javascript:void(0)" title="Default"></a>
-                    <a class="color" href="javascript:void(0)" style="background:#99F299" title="Green"></a>
-                    <a class="color" href="javascript:void(0)" style="background:#FFCD69" title="Orange"></a>
-                </div>
-            </div>
-        </div>
+		<div class="toolbar">
+			<div id="intro" class="toolbox"><strong>SkinTuner</strong> - all editor skin parts in one place</div>
+			<div class="toolbox">
+				<label for="colorpicker">UI Color:</label>
+				<input id="colorpicker" title="Quick access to the Chameleon feature." value="#CFD1CF" />
+				<div id="color-options">
+					<a class="color" data-colorpicker-color="#CFD1CF" href="javascript:void(0)" style="background:#CFD1CF"></a>
+					<a class="color" data-colorpicker-color="#99F299" href="javascript:void(0)" style="background:#99F299" title="Green"></a>
+					<a class="color" data-colorpicker-color="#FFCD69" href="javascript:void(0)" style="background:#FFCD69" title="Orange"></a>
+					<a class="color" data-colorpicker-color="#000000" href="javascript:void(0)" style="background:#000000" title="Black"></a>
+				</div>
+			</div>
+		</div>
 	</script>
 </body>
 </html>

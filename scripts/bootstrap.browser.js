@@ -76,8 +76,6 @@
 			container = document.body,
 			skinTuner;
 
-		clearTimeout( emergencyTimeoutThatAwaitsForEditorToBeLoadedId );
-
 		overwriteKeyGenerator( CKEDITOR );
 
 		configurations = findPresentationConfigurations( container );
@@ -139,15 +137,23 @@
 		arbitraryIntervalThatAwaitsForCKEditorToBeReadyId = setInterval( function() {
 			var CKEDITOR = window.CKEDITOR;
 
+			if ( CKEDITOR ) {
+				clearTimeout( emergencyTimeoutThatAwaitsForEditorToBeLoadedId );
+			}
+
 			if ( !CKEDITOR || !CKEDITOR.on ) {
 				return;
 			}
 
 			clearInterval( arbitraryIntervalThatAwaitsForCKEditorToBeReadyId );
 
-			CKEDITOR.on( 'loaded', function() {
+			if ( "loaded" === CKEDITOR.status ) {
 				onEditorInitialized( CKEDITOR, skintuner );
-			} );
+			} else {
+				CKEDITOR.on( "loaded", function() {
+					onEditorInitialized( CKEDITOR, skintuner );
+				} );
+			}
 		}, arbitraryIntervalThatAwaitsForCKEditorToBeReadyTimeout );
 
 	} );

@@ -13,6 +13,7 @@
     "version": "2.0.0",
     "main": "scripts/modules/ckeditor-skintuner.js",
     "dependencies": {
+        "html5shiv": "~3",
         "requirejs": "~2.1"
     },
     "devDependencies": {

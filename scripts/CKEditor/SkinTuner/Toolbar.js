@@ -19,7 +19,7 @@ define( [
 		REGEXP_TRIM = ( /^\s+|\s+$/g ),
 		SCRIPT_TYPE_TEMPLATE = "text/html",
 		TEMPLATE_NAME_TOOLBAR = "toolbar",
-		UICOLOR_DEFAULT = "",
+		UICOLOR_DEFAULT = "Default",
 
 		findTemplate, // private, function
 		normalizeTemplateString, // private, function
