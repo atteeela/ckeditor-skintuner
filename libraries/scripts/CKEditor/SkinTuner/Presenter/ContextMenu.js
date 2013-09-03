@@ -7,7 +7,9 @@
 
 /* global define: false */
 
-define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
+define( [
+	"CKEditor/SkinTuner/Presenter"
+], function( Presenter ) {
 
 	var ContextMenuPresenter, // constructor, function
 		REGEXP_ITEM_STATE = ( /\(([^\)]+)\)/ ),

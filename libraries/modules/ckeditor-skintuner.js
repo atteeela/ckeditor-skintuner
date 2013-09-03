@@ -134,7 +134,7 @@ define( [
 				var colorPickerContainer = document.getElementById( "colorpicker" );
 
 				colorPicker.addListener( ColorPicker.EVENT_COLOR_PICKED, function( evt ) {
-					onColorPicked( CKEDITOR, skinTuner, evt.data.color );
+					onColorPicked( CKEDITOR, skinTuner, evt.color );
 				} );
 				colorPicker.appendTo( CKEDITOR, colorPickerContainer );
 			} );

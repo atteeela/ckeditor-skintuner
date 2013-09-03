@@ -8,12 +8,14 @@
 
 	"use strict";
 
-	var editorScriptElement,
+	var LAST_EDITOR_LOCATION_HIT = "lastEditorLocationHit",
+		editorScriptElement,
 		emergencyTimeoutThatAwaitsForEditorToBeLoadedId,
 		emergencyTimeoutThatAwaitsForEditorToBeLoadedTimeout = 1000,
+		findPresentationConfigurations, // private, function
 		initializeEditor, // private, function
 		insertTimeout = 100,
-		findPresentationConfigurations, // private, function
+		localStorage = window.localStorage,
 		onEditorInitialized, // private, function
 		overwriteKeyGenerator, // private, function
 		parsePresentationConfigurationScript, // private, function
@@ -21,10 +23,17 @@
 			// skintuner is most probably placed inside /dev/skintuner
 			// directory; no further search is needed
 			"../../ckeditor.js",
-			"./components/ckeditor/ckeditor.js",
+
 			"./ckeditor.js",
-			"../ckeditor.js"
+			"../ckeditor.js",
+			"./components/ckeditor/ckeditor.js",
+			"../components/ckeditor/ckeditor.js",
+			"../../components/ckeditor/ckeditor.js"
 		];
+
+	if ( localStorage ) {
+		possibleEditorLocations.unshift( localStorage.getItem( LAST_EDITOR_LOCATION_HIT ) );
+	}
 
 	/**
 	 * @param {HTMLElement} container
@@ -129,7 +138,12 @@
 
 	setTimeout( initializeEditor, 0 );
 
-	require( [ "modules/ckeditor-skintuner" ], function( skintuner ) {
+	require.config( {
+		paths: {
+			"ckeditor-skintuner": "../modules/ckeditor-skintuner"
+		}
+	} );
+	require( [ "ckeditor-skintuner" ], function( skintuner ) {
 
 		var arbitraryIntervalThatAwaitsForCKEditorToBeReadyId = [],
 			arbitraryIntervalThatAwaitsForCKEditorToBeReadyTimeout = 10;
@@ -143,6 +157,10 @@
 
 			if ( !CKEDITOR || !CKEDITOR.on ) {
 				return;
+			}
+
+			if ( localStorage ) {
+				localStorage.setItem( LAST_EDITOR_LOCATION_HIT, editorScriptElement.src );
 			}
 
 			clearInterval( arbitraryIntervalThatAwaitsForCKEditorToBeReadyId );

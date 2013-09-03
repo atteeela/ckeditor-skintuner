@@ -1,25 +1,17 @@
 module.exports = function( grunt ) {
 	"use strict";
 
-	var // node modules
-	path = require( "path" ),
+	var path = require( "path" ),
 
 		// configuration
 		pkg = grunt.file.readJSON( "package.json" ),
 
-		baseScriptsDirectory = "scripts",
+		gruntConfiguration,
 		mainModuleFileExtension,
 		mainModuleFileExtensionLength,
-		mainModulePathRelativeToBaseScriptsDirectory,
 		moduleRootGlobalPropertyName = "MODULE_ROOT";
 
-	mainModulePathRelativeToBaseScriptsDirectory = path.relative( baseScriptsDirectory, pkg.main );
-	mainModuleFileExtension = path.extname( mainModulePathRelativeToBaseScriptsDirectory );
-	mainModuleFileExtensionLength = mainModuleFileExtension.length;
-	mainModulePathRelativeToBaseScriptsDirectory = mainModulePathRelativeToBaseScriptsDirectory.substr( 0, mainModulePathRelativeToBaseScriptsDirectory.length - mainModuleFileExtensionLength );
-	mainModulePathRelativeToBaseScriptsDirectory = mainModulePathRelativeToBaseScriptsDirectory.replace( path.sep, "/" );
-
-	grunt.initConfig( {
+	gruntConfiguration = {
 		bower: grunt.file.readJSON( "bower.json" ),
 		pkg: pkg,
 
@@ -33,9 +25,28 @@ module.exports = function( grunt ) {
 			build: {
 				files: [ {
 					expand: true,
-					filter: 'isFile',
 					dest: "build/<%= pkg.version %>",
-					src: baseScriptsDirectory + "/*.js"
+					src: "libraries/bootstraps/*.js"
+				}, {
+					expand: true,
+					flatten: true,
+					dest: "build/<%= pkg.version %>/components/html5shiv",
+					src: "components/html5shiv/dist/html5shiv.js"
+				}, {
+					cwd: "components/jscolor/",
+					expand: true,
+					dest: "build/<%= pkg.version %>/components/jscolor",
+					src: "**/*"
+				}, {
+					expand: true,
+					flatten: true,
+					dest: "build/<%= pkg.version %>/components/requirejs",
+					src: "components/requirejs/require.js"
+				}, {
+					cwd: "public",
+					expand: true,
+					dest: "build/<%= pkg.version %>",
+					src: "**/*"
 				} ]
 			}
 		},
@@ -57,20 +68,18 @@ module.exports = function( grunt ) {
 
 		// grunt-contrib-watch
 		watch: {
-			files: [ "<%= jshint.files %>" ],
+			files: [
+				"<%= jshint.files %>",
+				"public/**/*"
+			],
 			tasks: [ "beautify", "lint", "build" ]
 		},
 
 		// grunt-istanbul
 		instrument: {
-			files: [ baseScriptsDirectory + "/**/*.js" ],
+			files: [ "libraries/**/*.js" ],
 			options: {
 				basePath: "coverage/instrument/"
-			}
-		},
-		storeCoverage: {
-			options: {
-				dir: "coverage/reports/<%= pkg.version %>"
 			}
 		},
 		makeReport: {
@@ -79,6 +88,11 @@ module.exports = function( grunt ) {
 				type: "lcov",
 				dir: "<%= storeCoverage.options.dir %>",
 				print: "detail"
+			}
+		},
+		storeCoverage: {
+			options: {
+				dir: "coverage/reports/<%= pkg.version %>"
 			}
 		},
 
@@ -94,21 +108,27 @@ module.exports = function( grunt ) {
 		requirejs: {
 			compile: {
 				options: {
-					baseUrl: baseScriptsDirectory,
+					baseUrl: __dirname,
 					generateSourceMaps: true,
-					name: mainModulePathRelativeToBaseScriptsDirectory,
+					name: "<%= pkg.name %>",
 					optimize: "uglify2",
 					out: "build/<%= pkg.version %>/<%= pkg.main %>",
 					paths: {
-						"Bender/EventDispatcher/Event": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/Event",
-						"Bender/EventDispatcher/EventAggregator": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/EventAggregator",
-						"Bender/EventDispatcher/EventDispatcher": __dirname + "/node_modules/event-dispatcher/scripts/EventDispatcher/EventDispatcher"
+						"Bender/EventDispatcher": __dirname + "/node_modules/event-dispatcher/libraries/scripts/Bender/EventDispatcher",
+						"CKEditor/SkinTuner": __dirname + "/libraries/scripts/CKEditor/SkinTuner"
 					},
 					preserveLicenseComments: false
 				}
 			}
 		}
-	} );
+	};
+
+	mainModuleFileExtension = path.extname( pkg.main );
+	mainModuleFileExtensionLength = mainModuleFileExtension.length;
+
+	gruntConfiguration.requirejs.compile.options.paths[ pkg.name ] = pkg.main.substr( 0, pkg.main.length - mainModuleFileExtensionLength );
+
+	grunt.initConfig( gruntConfiguration );
 
 	grunt.loadNpmTasks( "grunt-contrib-clean" );
 	grunt.loadNpmTasks( "grunt-contrib-copy" );

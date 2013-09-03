@@ -11,14 +11,15 @@
     "keywords": ["ckeditor", "skintuner", "skin", "tuner"],
     "license": "MIT",
     "version": "2.0.0",
-    "main": "scripts/modules/ckeditor-skintuner.js",
+    "main": "libraries/modules/ckeditor-skintuner.js",
     "scripts": {
         "test": "grunt test"
     },
     "dependencies": {
-        "event-dispatcher": "~1.1"
+        "event-dispatcher": "~2"
     },
     "devDependencies": {
+        "bower": "~1",
         "grunt": "~0.4",
         "grunt-contrib-clean": "~0.5",
         "grunt-contrib-copy": "~0.4",

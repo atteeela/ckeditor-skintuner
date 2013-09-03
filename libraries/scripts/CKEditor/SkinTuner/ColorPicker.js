@@ -169,7 +169,7 @@ define( [
 		var evt = createColorPickerEvent( CKEDITOR, container, color ),
 			that = this;
 
-		evt.data.color = color;
+		evt.color = color;
 
 		setTimeout( function() {
 			that.dispatch( ColorPicker.EVENT_COLOR_PICKED, evt );
