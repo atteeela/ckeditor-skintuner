@@ -120,6 +120,11 @@ define( [
 			tabName = presentationConfiguration.tab,
 			that = this;
 
+		CKEDITOR.ui.dialog.file.prototype.getInputElement = function() {
+			// this one causes security exceptions in IE
+			return false;
+		};
+
 		editor.once( 'dialogShow', function( evt ) {
 			that.onDialogShow( CKEDITOR, container, presentation, editor, tabName, evt.data );
 		} );

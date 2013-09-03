@@ -24,6 +24,7 @@ define( function() {
 	 */
 	ConfigurationNormalizer.prototype.normalizeConfiguration = function( configuration, container ) {
 		configuration = this.normalizeConfigurationElement( configuration, container );
+		configuration = this.normalizeConfigurationPriority( configuration, container );
 		configuration = this.normalizeConfigurationType( configuration, container );
 
 		return configuration;
@@ -47,6 +48,22 @@ define( function() {
 				throw new Error( "Unable to find element identified by id: #" + elementId );
 			}
 			delete configuration[ "element_id" ];
+		}
+
+		return configuration;
+	};
+
+	/**
+	 * @param {object} configuration
+	 * @param {HTMLElement} container
+	 * @return {object}
+	 * @throws {Error} if cannot find element
+	 */
+	ConfigurationNormalizer.prototype.normalizeConfigurationPriority = function( configuration, container ) {
+		if ( !configuration.hasOwnProperty( "priority" ) ) {
+			configuration.priority = 0;
+		} else {
+			configuration.priority = parseInt( configuration.priority, 10 );
 		}
 
 		return configuration;

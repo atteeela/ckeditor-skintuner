@@ -108,6 +108,7 @@ define( function() {
 		this.container.setStyle( "overflow", "hidden" );
 		this.container.setStyle( "visibility", "visible" );
 		this.container.append( this.mask );
+		this.mask.setStyle( "display", "none" );
 	};
 
 	return SplashScreen;

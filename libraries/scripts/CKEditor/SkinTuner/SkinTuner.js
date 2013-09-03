@@ -15,14 +15,13 @@ define( [
 	"CKEditor/SkinTuner/PresenterRepository"
 ], function( Repository, ConfigurationNormalizer, Presentation, PresentationRepository, PresenterRepository ) {
 
-	var SkinTuner, // constructor, function
-
-		configurationNormalizer = new ConfigurationNormalizer();
+	var SkinTuner; // constructor, function
 
 	/**
 	 * @constructor
 	 */
 	SkinTuner = function() {
+		this.configurationNormalizer = new ConfigurationNormalizer();
 		this.editorsRepository = new Repository();
 		this.partiallyCreatedEditorsRepository = new Repository();
 		this.presentationRepository = new PresentationRepository();
@@ -46,7 +45,6 @@ define( [
 			presentationConfiguration = {},
 			presenter;
 
-		configuration = configurationNormalizer.normalizeConfiguration( configuration, container );
 		presenter = this.presenterRepository.findOneByType( configuration.type );
 		if ( !presenter ) {
 			throw new Error( "There is no presenter registered for type: " + configuration.type );
@@ -77,11 +75,29 @@ define( [
 	 * @return {void}
 	 */
 	SkinTuner.prototype.presentEditorElements = function( CKEDITOR, container, configurations ) {
-		var i;
+		var i,
+			that = this;
 
+		configurations = configurations.map( function( configuration ) {
+			return that.configurationNormalizer.normalizeConfiguration( configuration, container );
+		} );
+
+		configurations = this.sortConfigurations( CKEDITOR, container, configurations );
 		for ( i = 0; i < configurations.length; i += 1 ) {
 			this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
 		}
+	};
+
+	/**
+	 * @param {CKEDITOR} CKEDITOR
+	 * @param {HTMLElement} container
+	 * @param {array} configurations
+	 * @return {void}
+	 */
+	SkinTuner.prototype.sortConfigurations = function( CKEDITOR, container, configurations ) {
+		return configurations.sort( function( a, b ) {
+			return b.priority - a.priority;
+		} );
 	};
 
 	return SkinTuner;
