@@ -9,9 +9,8 @@
 /* jshint browser: true */
 
 define( [
-	"Bender/EventDispatcher/Event",
-	"Bender/EventDispatcher/EventDispatcher"
-], function( Event, EventDispatcher ) {
+	"CKEditor/SkinTuner/UserInterfaceElement"
+], function( UserInterfaceElement ) {
 
 	var Toolbar, // constructor, function
 
@@ -81,18 +80,13 @@ define( [
 	};
 
 	/**
-	 * @auguments Bender/EventDispatcher/EventDispatcher
+	 * @auguments CKEditor/SkinTuner/UserInterfaceElement
 	 * @constructor
 	 */
 	Toolbar = function() {
-		EventDispatcher.call( this );
+		UserInterfaceElement.call( this );
 	};
-	Toolbar.prototype = Object.create( EventDispatcher.prototype );
-
-	/**
-	 * @constant {string}
-	 */
-	Toolbar.EVENT_TOOLBAR_READY = "event.toolbar.ready";
+	Toolbar.prototype = Object.create( UserInterfaceElement.prototype );
 
 	/**
 	 * @param {CKEDITOR} CKEDITOR
@@ -108,15 +102,6 @@ define( [
 	};
 
 	/**
-	 * @return {array}
-	 */
-	Toolbar.prototype.getSupportedEvents = function() {
-		return [
-			Toolbar.EVENT_TOOLBAR_READY
-		];
-	};
-
-	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
 	 * @return {string}
@@ -126,7 +111,7 @@ define( [
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/Toolbar#EVENT_TOOLBAR_READY
+	 * @fires CKEditor/SkinTuner/UserInterfaceElement/Toolbar#EVENT_TOOLBAR_READY
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
 	 * @param {CKEDITOR.template} template
@@ -142,10 +127,7 @@ define( [
 		container = CKEDITOR.dom.element.get( container );
 		container.append( toolbar );
 
-		this.dispatch( Toolbar.EVENT_TOOLBAR_READY, new Event( {
-			container: container.$,
-			toolbar: this
-		} ) );
+		this.notifyUserInterfaceElementReady( CKEDITOR, container.$ );
 	};
 
 	return Toolbar;

@@ -10,8 +10,8 @@
 
 define( [
 	"Bender/EventDispatcher/Event",
-	"Bender/EventDispatcher/EventDispatcher"
-], function( Event, EventDispatcher ) {
+	"CKEditor/SkinTuner/UserInterfaceElement"
+], function( Event, UserInterfaceElement ) {
 
 	var ColorPicker, // constructor, function
 
@@ -52,7 +52,7 @@ define( [
 
 	/**
 	 * @access private
-	 * @param {CKEditor/SkinTuner/ColorPicker} colorPicker
+	 * @param {CKEditor/SkinTuner/UserInterfaceElement/ColorPicker} colorPicker
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLInputElement} container
 	 * @return {Bender/EventDispatcher/Event}
@@ -66,8 +66,8 @@ define( [
 
 	/**
 	 * @access private
-	 * @fires CKEditor/SkinTuner/ColorPicker#EVENT_COLOR_PICKER_READY
-	 * @param {CKEditor/SkinTuner/ColorPicker} colorPicker
+	 * @fires CKEditor/SkinTuner/UserInterfaceElement#EVENT_READY
+	 * @param {CKEditor/SkinTuner/UserInterfaceElement/ColorPicker} colorPicker
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLInputElement} container
 	 * @param {jscolor} jscolor
@@ -80,12 +80,12 @@ define( [
 			required: false
 		} );
 
-		colorPicker.dispatch( ColorPicker.EVENT_COLOR_PICKER_READY, createColorPickerEvent( colorPicker, CKEDITOR, container ) );
+		colorPicker.dispatch( UserInterfaceElement.EVENT_READY, createColorPickerEvent( colorPicker, CKEDITOR, container ) );
 	};
 
 	/**
 	 * @access private
-	 * @param {CKEditor/SkinTuner/ColorPicker} colorPicker
+	 * @param {CKEditor/SkinTuner/UserInterfaceElement/ColorPicker} colorPicker
 	 * @param {function} callback
 	 * @return {void}
 	 */
@@ -98,23 +98,18 @@ define( [
 	};
 
 	/**
-	 * @auguments Bender/EventDispatcher/EventDispatcher
+	 * @auguments CKEditor/SkinTuner/UserInterfaceElement
 	 * @constructor
 	 */
 	ColorPicker = function() {
-		EventDispatcher.call( this );
+		UserInterfaceElement.call( this );
 	};
-	ColorPicker.prototype = Object.create( EventDispatcher.prototype );
+	ColorPicker.prototype = Object.create( UserInterfaceElement.prototype );
 
 	/**
 	 * @constant {string}
 	 */
 	ColorPicker.EVENT_COLOR_PICKED = "event.color.picked";
-
-	/**
-	 * @constant {string}
-	 */
-	ColorPicker.EVENT_COLOR_PICKER_READY = "event.color.picker.ready";
 
 	/**
 	 * @param {CKEDITOR} CKEDITOR
@@ -153,10 +148,11 @@ define( [
 	 * @return {array}
 	 */
 	ColorPicker.prototype.getSupportedEvents = function() {
-		return [
-			ColorPicker.EVENT_COLOR_PICKED,
-			ColorPicker.EVENT_COLOR_PICKER_READY
-		];
+		var userInterfaceElementSupportedEvents = UserInterfaceElement.prototype.getSupportedEvents.call( this );
+
+		return userInterfaceElementSupportedEvents.concat( [
+			ColorPicker.EVENT_COLOR_PICKED
+		] );
 	};
 
 	/**

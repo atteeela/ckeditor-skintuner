@@ -10,19 +10,20 @@
 
 define( [
 	"Bender/EventDispatcher/EventDispatcher/Repository",
-	"CKEditor/SkinTuner/ColorPicker",
 	"CKEditor/SkinTuner/IdlenessMonitor",
 	"CKEditor/SkinTuner/Presentation",
 	"CKEditor/SkinTuner/Presenter",
+	"CKEditor/SkinTuner/Presenter/ContextMenu",
 	"CKEditor/SkinTuner/Presenter/Dialog",
 	"CKEditor/SkinTuner/Presenter/InlineEditor",
-	"CKEditor/SkinTuner/Presenter/ContextMenu",
 	"CKEditor/SkinTuner/Presenter/RichCombo",
 	"CKEditor/SkinTuner/Presenter/ThemedEditor",
 	"CKEditor/SkinTuner/SkinTuner",
 	"CKEditor/SkinTuner/SplashScreen",
-	"CKEditor/SkinTuner/Toolbar"
-], function( Repository, ColorPicker, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen, Toolbar ) {
+	"CKEditor/SkinTuner/UserInterfaceElement",
+	"CKEditor/SkinTuner/UserInterfaceElement/ColorPicker",
+	"CKEditor/SkinTuner/UserInterfaceElement/Toolbar"
+], function( Repository, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen, UserInterfaceElement, ColorPicker, Toolbar ) {
 
 	var colorPicker = new ColorPicker(),
 		contextMenuPresenter = new ContextMenuPresenter(),
@@ -130,7 +131,7 @@ define( [
 		 * @return {void}
 		 */
 		appendToolbar: function( CKEDITOR, skinTuner, container ) {
-			toolbar.addListener( Toolbar.EVENT_TOOLBAR_READY, function( evt ) {
+			toolbar.addListener( UserInterfaceElement.EVENT_READY, function( evt ) {
 				var colorPickerContainer = document.getElementById( "colorpicker" );
 
 				colorPicker.addListener( ColorPicker.EVENT_COLOR_PICKED, function( evt ) {

@@ -32,6 +32,21 @@ define( [
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
 	 * @param {array} configurations
+	 * @param {object} editorConfiguration
+	 * @param {string} presentationType
+	 * @param {int} presentationPriority
+	 * @param {object} presentationConfiguration
+	 * @return {void}
+	 */
+	SkinTuner.prototype.onPresentationDone = function( CKEDITOR, container, configurations, editorConfiguration, presentationType, presentationPriority, presentationConfiguration ) {
+		console.log( presentationType );
+		console.log( presentationPriority );
+	};
+
+	/**
+	 * @param {CKEDITOR} CKEDITOR
+	 * @param {HTMLElement} container
+	 * @param {array} configurations
 	 * @param {object} configuration
 	 * @return {CKEditor/SkinTuner/Presentation}
 	 * @throws {Error} if there is no presenter registered
@@ -43,7 +58,8 @@ define( [
 			presentationRepository = this.presentationRepository,
 			presentation,
 			presentationConfiguration = {},
-			presenter;
+			presenter,
+			that = this;
 
 		presenter = this.presenterRepository.findOneByType( configuration.type );
 		if ( !presenter ) {
@@ -53,7 +69,7 @@ define( [
 		if ( configuration.hasOwnProperty( configuration.type ) ) {
 			presentationConfiguration = configuration[ configuration.type ];
 		}
-		presentation = presenter.present( CKEDITOR, configuration.element, presentationConfiguration, configuration.config );
+		presentation = presenter.present( CKEDITOR, configuration.element, configuration.type, configuration.priority, presentationConfiguration, configuration.config );
 
 		editor = presentation.getEditor();
 
@@ -64,6 +80,9 @@ define( [
 		} );
 
 		presentationRepository.add( presentation );
+		presentation.addListener( Presentation.EVENT_PRESENTATION_DONE, function( evt ) {
+			that.onPresentationDone( CKEDITOR, container, configurations, evt.editorConfiguration, evt.presentationType, evt.presentationPriority, evt.presentationConfiguration );
+		} );
 
 		return presentation;
 	};
@@ -76,6 +95,7 @@ define( [
 	 */
 	SkinTuner.prototype.presentEditorElements = function( CKEDITOR, container, configurations ) {
 		var i,
+			presentation,
 			that = this;
 
 		configurations = configurations.map( function( configuration ) {
@@ -83,8 +103,9 @@ define( [
 		} );
 
 		configurations = this.sortConfigurations( CKEDITOR, container, configurations );
+
 		for ( i = 0; i < configurations.length; i += 1 ) {
-			this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
+			presentation = this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
 		}
 	};
 

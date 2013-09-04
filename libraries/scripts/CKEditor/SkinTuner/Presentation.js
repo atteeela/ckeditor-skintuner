@@ -22,7 +22,11 @@ define( [
 	createPresentationEvent = function( presentation ) {
 		return new Event( {
 			editor: presentation.editor,
-			presentation: presentation
+			editorConfiguration: presentation.editorConfiguration,
+			presentation: presentation,
+			presentationConfiguration: presentation.presentationConfiguration,
+			presentationPriority: presentation.presentationPriority,
+			presentationType: presentation.presentationType
 		} );
 	};
 
@@ -30,14 +34,22 @@ define( [
 	 * @auguments Bender/EventDispatcher/EventDispatcher
 	 * @constructor
 	 * @param {Editor} editor instance of CKEditor
+	 * @param {object} editorConfiguration
+	 * @param {string} presentationType
+	 * @param {int} presentationPriority
+	 * @param {object} presentationConfiguration
 	 */
-	Presentation = function( editor ) {
+	Presentation = function( editor, editorConfiguration, presentationType, presentationPriority, presentationConfiguration ) {
 		EventDispatcher.call( this );
 
 		var that = this;
 
 		this.editor = editor;
+		this.editorConfiguration = editorConfiguration;
 		this.isDone = false;
+		this.presentationType = presentationType;
+		this.presentationPriority = presentationPriority;
+		this.presentationConfiguration = presentationConfiguration;
 
 		editor.on( 'instanceReady', function() {
 			that.notifyEditorReady();

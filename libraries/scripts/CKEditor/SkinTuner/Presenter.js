@@ -169,18 +169,19 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
+	 * @param {string} presentationType
+	 * @param {int} presentationPriority
 	 * @param {object} presentationConfiguration
 	 * @param {object} editorConfiguration
 	 * @return {CKEditor/SkinTuner/Presentation}
 	 */
-	Presenter.prototype.present = function( CKEDITOR, container, presentationConfiguration, editorConfiguration ) {
+	Presenter.prototype.present = function( CKEDITOR, container, presentationType, presentationPriority, presentationConfiguration, editorConfiguration ) {
 		var editor = this.createEditor( CKEDITOR, container, editorConfiguration ),
-			presentation = new Presentation( editor ),
+			presentation = new Presentation( editor, editorConfiguration, presentationType, presentationPriority, presentationConfiguration ),
 			that = this;
 
 		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
 			presentation.start();
-			// setTimeout( function() { editor.setUiColor( "#ffc000" ); }, 10000 );
 			that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, editor, editorConfiguration );
 		} );
 
