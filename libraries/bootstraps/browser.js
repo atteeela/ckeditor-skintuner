@@ -31,6 +31,40 @@
 			"../../components/ckeditor/ckeditor.js"
 		];
 
+	/* global alert: false */
+	if ( !Array.forEach ) {
+		Array.forEach = function() {
+			alert( "FOREACH" );
+		};
+	}
+
+	if ( !Array.isArray ) {
+		Array.isArray = function( vArg ) {
+			return Object.prototype.toString.call( vArg ) === "[object Array]";
+		};
+	}
+
+	if ( !Object.create ) {
+		Object.create = ( function() {
+			var F = function() {};
+
+			return function( o ) {
+				if ( 1 !== arguments.length ) {
+					throw new Error( 'Object.create implementation only accepts one parameter.' );
+				}
+				F.prototype = o;
+
+				return new F();
+			};
+		} )();
+	}
+
+	if ( !Object.defineProperty ) {
+		Object.defineProperty = function( o, name, options ) {
+			o[ name ] = options.value;
+		};
+	}
+
 	if ( localStorage ) {
 		possibleEditorLocations.unshift( localStorage.getItem( LAST_EDITOR_LOCATION_HIT ) );
 	}
@@ -77,7 +111,7 @@
 
 	/**
 	 * @param {CKEDITOR} CKEDITOR
-	 * @param {CKEditor/SkinTuner/modules/skintuner} skintuner
+	 * @param {ckeditor-skintuner/modules/skintuner} skintuner
 	 * @return {void}
 	 */
 	onEditorInitialized = function( CKEDITOR, skintuner ) {
@@ -132,8 +166,8 @@
 	emergencyTimeoutThatAwaitsForEditorToBeLoadedId = setTimeout( function() {
 		// editor is not loaded for too long, probably there is some random
 		// network error
-		window.location.reload();
-		window.location.href = window.location.href;
+		// window.location.reload();
+		// window.location.href = window.location.href;
 	}, emergencyTimeoutThatAwaitsForEditorToBeLoadedTimeout );
 
 	setTimeout( initializeEditor, 0 );

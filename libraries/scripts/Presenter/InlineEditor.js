@@ -7,12 +7,12 @@
 
 /* global define: false */
 
-define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
+define( [ "-/Presenter" ], function( Presenter ) {
 
 	var InlineEditorPresenter; // constructor, function
 
 	/**
-	 * @auguments CKEditor/SkinTuner/Presenter
+	 * @auguments ckeditor-skintuner/Presenter
 	 * @constructor
 	 */
 	InlineEditorPresenter = function() {
@@ -45,7 +45,7 @@ define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {object} presentationConfiguration
 	 * @param {Editor} editor
 	 * @param {object} editorConfiguration

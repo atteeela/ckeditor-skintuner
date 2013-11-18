@@ -7,12 +7,12 @@
 
 /* global define: false */
 
-define( [ "CKEditor/SkinTuner/Presenter" ], function( Presenter ) {
+define( [ "-/Presenter" ], function( Presenter ) {
 
 	var ThemedEditorPresenter; // constructor, function
 
 	/**
-	 * @auguments CKEditor/SkinTuner/Presenter
+	 * @auguments ckeditor-skintuner/Presenter
 	 * @constructor
 	 */
 	ThemedEditorPresenter = function() {

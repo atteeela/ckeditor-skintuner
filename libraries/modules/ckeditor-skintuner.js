@@ -9,20 +9,20 @@
 /* jshint browser: true */
 
 define( [
-	"Bender/EventDispatcher/EventDispatcher/Repository",
-	"CKEditor/SkinTuner/IdlenessMonitor",
-	"CKEditor/SkinTuner/Presentation",
-	"CKEditor/SkinTuner/Presenter",
-	"CKEditor/SkinTuner/Presenter/ContextMenu",
-	"CKEditor/SkinTuner/Presenter/Dialog",
-	"CKEditor/SkinTuner/Presenter/InlineEditor",
-	"CKEditor/SkinTuner/Presenter/RichCombo",
-	"CKEditor/SkinTuner/Presenter/ThemedEditor",
-	"CKEditor/SkinTuner/SkinTuner",
-	"CKEditor/SkinTuner/SplashScreen",
-	"CKEditor/SkinTuner/UserInterfaceElement",
-	"CKEditor/SkinTuner/UserInterfaceElement/ColorPicker",
-	"CKEditor/SkinTuner/UserInterfaceElement/Toolbar"
+	"data-container/Repository",
+	"-/IdlenessMonitor",
+	"-/Presentation",
+	"-/Presenter",
+	"-/Presenter/ContextMenu",
+	"-/Presenter/Dialog",
+	"-/Presenter/InlineEditor",
+	"-/Presenter/RichCombo",
+	"-/Presenter/ThemedEditor",
+	"-/SkinTuner",
+	"-/SplashScreen",
+	"-/UserInterfaceElement",
+	"-/UserInterfaceElement/ColorPicker",
+	"-/UserInterfaceElement/Toolbar"
 ], function( Repository, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen, UserInterfaceElement, ColorPicker, Toolbar ) {
 
 	var colorPicker = new ColorPicker(),
@@ -60,7 +60,7 @@ define( [
 
 	/**
 	 * @param {CKEDITOR} CKEDITOR
-	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
 	 * @param {string} color hex RGB with preceding hash
 	 * @return {void}
 	 */
@@ -74,7 +74,7 @@ define( [
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
 	 * @param {array} configurations
-	 * @return {CKEditor/SkinTuner/SkinTuner}
+	 * @return {ckeditor-skintuner/SkinTuner}
 	 */
 	presentEditorElements = function( CKEDITOR, container, configurations ) {
 		var processedActions = 0,
@@ -126,7 +126,7 @@ define( [
 
 		/**
 		 * @param {CKEDITOR} CKEDITOR
-		 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+		 * @param {ckeditor-skintuner/SkinTuner} skinTuner
 		 * @param {HTMLElement} container
 		 * @return {void}
 		 */
@@ -142,7 +142,7 @@ define( [
 			toolbar.appendTo( CKEDITOR, container );
 		},
 
-		presentEditorElements: presentEditorElements,
+		presentEditorElements: presentEditorElements
 
 	};
 

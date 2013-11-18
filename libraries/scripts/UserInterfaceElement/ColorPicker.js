@@ -9,8 +9,8 @@
 /* jshint browser: true */
 
 define( [
-	"Bender/EventDispatcher/Event",
-	"CKEditor/SkinTuner/UserInterfaceElement"
+	"event-dispatcher/Event",
+	"-/UserInterfaceElement"
 ], function( Event, UserInterfaceElement ) {
 
 	var ColorPicker, // constructor, function
@@ -52,10 +52,10 @@ define( [
 
 	/**
 	 * @access private
-	 * @param {CKEditor/SkinTuner/UserInterfaceElement/ColorPicker} colorPicker
+	 * @param {ckeditor-skintuner/UserInterfaceElement/ColorPicker} colorPicker
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLInputElement} container
-	 * @return {Bender/EventDispatcher/Event}
+	 * @return {event-dispatcher/Event}
 	 */
 	createColorPickerEvent = function( colorPicker, CKEDITOR, container ) {
 		return new Event( {
@@ -66,8 +66,8 @@ define( [
 
 	/**
 	 * @access private
-	 * @fires CKEditor/SkinTuner/UserInterfaceElement#EVENT_READY
-	 * @param {CKEditor/SkinTuner/UserInterfaceElement/ColorPicker} colorPicker
+	 * @fires ckeditor-skintuner/UserInterfaceElement#EVENT_READY
+	 * @param {ckeditor-skintuner/UserInterfaceElement/ColorPicker} colorPicker
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLInputElement} container
 	 * @param {jscolor} jscolor
@@ -85,7 +85,7 @@ define( [
 
 	/**
 	 * @access private
-	 * @param {CKEditor/SkinTuner/UserInterfaceElement/ColorPicker} colorPicker
+	 * @param {ckeditor-skintuner/UserInterfaceElement/ColorPicker} colorPicker
 	 * @param {function} callback
 	 * @return {void}
 	 */
@@ -98,7 +98,7 @@ define( [
 	};
 
 	/**
-	 * @auguments CKEditor/SkinTuner/UserInterfaceElement
+	 * @auguments ckeditor-skintuner/UserInterfaceElement
 	 * @constructor
 	 */
 	ColorPicker = function() {

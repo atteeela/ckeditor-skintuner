@@ -8,16 +8,16 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/Event",
-	"Bender/EventDispatcher/EventDispatcher"
+	"event-dispatcher/Event",
+	"event-dispatcher/EventDispatcher"
 ], function( Event, EventDispatcher ) {
 
 	var Presentation, // constructor, function
 		createPresentationEvent; // private, function
 
 	/**
-	 * @Param {CKEditor/SkinTuner/Presentation} presentation
-	 * @return {Bender/EventDispatcher/Event}
+	 * @Param {ckeditor-skintuner/Presentation} presentation
+	 * @return {event-dispatcher/Event}
 	 */
 	createPresentationEvent = function( presentation ) {
 		return new Event( {
@@ -31,7 +31,7 @@ define( [
 	};
 
 	/**
-	 * @auguments Bender/EventDispatcher/EventDispatcher
+	 * @auguments event-dispatcher/EventDispatcher
 	 * @constructor
 	 * @param {Editor} editor instance of CKEditor
 	 * @param {object} editorConfiguration
@@ -99,7 +99,7 @@ define( [
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/Presentation#EVENT_EDITOR_READY
+	 * @fires ckeditor-skintuner/Presentation#EVENT_EDITOR_READY
 	 * @return {void}
 	 */
 	Presentation.prototype.notifyEditorReady = function() {
@@ -107,7 +107,7 @@ define( [
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/Presentation#EVENT_PRESENTATION_DONE
+	 * @fires ckeditor-skintuner/Presentation#EVENT_PRESENTATION_DONE
 	 * @return {void}
 	 */
 	Presentation.prototype.notifyPresentationDone = function() {
@@ -115,7 +115,7 @@ define( [
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/Presentation#EVENT_PRESENTATION_START
+	 * @fires ckeditor-skintuner/Presentation#EVENT_PRESENTATION_START
 	 * @return {void}
 	 */
 	Presentation.prototype.notifyPresentationStart = function() {

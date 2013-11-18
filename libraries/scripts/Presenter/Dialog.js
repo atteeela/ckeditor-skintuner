@@ -8,8 +8,8 @@
 /* global define: false */
 
 define( [
-	"CKEditor/SkinTuner/Presentation",
-	"CKEditor/SkinTuner/Presenter"
+	"-/Presentation",
+	"-/Presenter"
 ], function( Presentation, Presenter ) {
 
 	var DialogPresenter, // constructor, function
@@ -18,7 +18,7 @@ define( [
 		ongoingPresentation;
 
 	/**
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {Editor} editor
 	 * @param {string} dialogName
 	 * @return {void}
@@ -41,7 +41,7 @@ define( [
 	};
 
 	/**
-	 * @auguments CKEditor/SkinTuner/Presenter
+	 * @auguments ckeditor-skintuner/Presenter
 	 * @constructor
 	 */
 	DialogPresenter = function() {
@@ -59,7 +59,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {Editor} editor
 	 * @param {string} tabName
 	 * @param {CKEDITOR.dialog} dialog
@@ -72,7 +72,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {Editor} editor
 	 * @param {string} tabName
 	 * @param {CKEDITOR.dialog} dialog
@@ -109,7 +109,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {object} presentationConfiguration
 	 * @param {Editor} editor
 	 * @param {object} editorConfiguration

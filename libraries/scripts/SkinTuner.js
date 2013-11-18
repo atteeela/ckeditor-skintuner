@@ -8,11 +8,11 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/EventDispatcher/Repository",
-	"CKEditor/SkinTuner/ConfigurationNormalizer",
-	"CKEditor/SkinTuner/Presentation",
-	"CKEditor/SkinTuner/PresentationRepository",
-	"CKEditor/SkinTuner/PresenterRepository"
+	"data-container/Repository",
+	"-/ConfigurationNormalizer",
+	"-/Presentation",
+	"-/PresentationRepository",
+	"-/PresenterRepository"
 ], function( Repository, ConfigurationNormalizer, Presentation, PresentationRepository, PresenterRepository ) {
 
 	var SkinTuner; // constructor, function
@@ -48,7 +48,7 @@ define( [
 	 * @param {HTMLElement} container
 	 * @param {array} configurations
 	 * @param {object} configuration
-	 * @return {CKEditor/SkinTuner/Presentation}
+	 * @return {ckeditor-skintuner/Presentation}
 	 * @throws {Error} if there is no presenter registered
 	 */
 	SkinTuner.prototype.presentEditorElement = function( CKEDITOR, container, configurations, configuration ) {
@@ -69,6 +69,7 @@ define( [
 		if ( configuration.hasOwnProperty( configuration.type ) ) {
 			presentationConfiguration = configuration[ configuration.type ];
 		}
+
 		presentation = presenter.present( CKEDITOR, configuration.element, configuration.type, configuration.priority, presentationConfiguration, configuration.config );
 
 		editor = presentation.getEditor();

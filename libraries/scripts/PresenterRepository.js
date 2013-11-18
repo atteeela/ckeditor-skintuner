@@ -8,14 +8,14 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/EventDispatcher/Repository",
-	"CKEditor/SkinTuner/Presenter"
+	"data-container/Repository",
+	"-/Presenter"
 ], function( Repository, Presenter ) {
 
 	var PresenterRepository; // constructor, function
 
 	/**
-	 * @auguments Bender/EventDispatcher/EventDispatcher/Repository
+	 * @auguments data-container/Repository
 	 * @constructor
 	 */
 	PresenterRepository = function() {

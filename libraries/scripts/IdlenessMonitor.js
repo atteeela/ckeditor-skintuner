@@ -8,21 +8,20 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/Event",
-	"Bender/EventDispatcher/EventDispatcher",
-	"Bender/EventDispatcher/EventDispatcher/Repository",
-	"CKEditor/SkinTuner/Presentation",
-	"CKEditor/SkinTuner/SkinTuner"
+	"event-dispatcher/Event",
+	"event-dispatcher/EventDispatcher",
+	"data-container/Repository",
+	"-/Presentation",
+	"-/SkinTuner"
 ], function( Event, EventDispatcher, Repository, Presentation, SkinTuner ) {
 
 	var IdlenessMonitor, // constructor, function
-
 		createIdlenessEvent; // private, function
 
 	/**
-	 * @param {CKEditor/SkinTuner/IdlenessMonitor} idlenessMonitor
-	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
-	 * @return {Bender/EventDispatcher/Event}
+	 * @param {ckeditor-skintuner/IdlenessMonitor} idlenessMonitor
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
+	 * @return {event-dispatcher/Event}
 	 */
 	createIdlenessEvent = function( idlenessMonitor, skinTuner ) {
 		return new Event( {
@@ -32,9 +31,9 @@ define( [
 	};
 
 	/**
-	 * @auguments Bender/EventDispatcher/EventDispatcher
+	 * @auguments event-dispatcher/EventDispatcher
 	 * @constructor
-	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
 	 */
 	IdlenessMonitor = function( skinTuner ) {
 		EventDispatcher.call( this );
@@ -91,8 +90,8 @@ define( [
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/EditorRepository#EVENT_BUSY
-	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+	 * @fires ckeditor-skintuner/EditorRepository#EVENT_BUSY
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.notifyBusy = function( skinTuner ) {
@@ -100,8 +99,8 @@ define( [
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/EditorRepository#EVENT_IDLE
-	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+	 * @fires ckeditor-skintuner/EditorRepository#EVENT_IDLE
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.notifyIdle = function( skinTuner ) {
@@ -109,7 +108,7 @@ define( [
 	};
 
 	/**
-	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.onBusynessDecrease = function( skinTuner ) {
@@ -121,7 +120,7 @@ define( [
 	};
 
 	/**
-	 * @param {CKEditor/SkinTuner/SkinTuner} skinTuner
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
 	 * @return {void}
 	 */
 	IdlenessMonitor.prototype.onBusynessIncrease = function( skinTuner ) {

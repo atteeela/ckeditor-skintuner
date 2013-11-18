@@ -9,7 +9,7 @@
 /* jshint browser: true */
 
 define( [
-	"CKEditor/SkinTuner/UserInterfaceElement"
+	"-/UserInterfaceElement"
 ], function( UserInterfaceElement ) {
 
 	var Toolbar, // constructor, function
@@ -80,7 +80,7 @@ define( [
 	};
 
 	/**
-	 * @auguments CKEditor/SkinTuner/UserInterfaceElement
+	 * @auguments ckeditor-skintuner/UserInterfaceElement
 	 * @constructor
 	 */
 	Toolbar = function() {
@@ -111,7 +111,7 @@ define( [
 	};
 
 	/**
-	 * @fires CKEditor/SkinTuner/UserInterfaceElement/Toolbar#EVENT_TOOLBAR_READY
+	 * @fires ckeditor-skintuner/UserInterfaceElement/Toolbar#EVENT_TOOLBAR_READY
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
 	 * @param {CKEDITOR.template} template

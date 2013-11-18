@@ -8,7 +8,7 @@
 /* global define: false */
 
 define( [
-	"CKEditor/SkinTuner/Presentation"
+	"-/Presentation"
 ], function( Presentation ) {
 
 	var Presenter, // constructor, function
@@ -135,7 +135,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {Editor} editor
-	 * @param {CKEditor/SkinTuner/Presentation} presentation (optional)
+	 * @param {ckeditor-skintuner/Presentation} presentation (optional)
 	 * @return {void}
 	 */
 	Presenter.prototype.destroyEditor = function( CKEDITOR, editor, presentation ) {
@@ -173,7 +173,7 @@ define( [
 	 * @param {int} presentationPriority
 	 * @param {object} presentationConfiguration
 	 * @param {object} editorConfiguration
-	 * @return {CKEditor/SkinTuner/Presentation}
+	 * @return {ckeditor-skintuner/Presentation}
 	 */
 	Presenter.prototype.present = function( CKEDITOR, container, presentationType, presentationPriority, presentationConfiguration, editorConfiguration ) {
 		var editor = this.createEditor( CKEDITOR, container, editorConfiguration ),
@@ -193,7 +193,7 @@ define( [
 	 *
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {object} presentationConfiguration
 	 * @param {Editor} editor
 	 * @param {object} editorConfiguration

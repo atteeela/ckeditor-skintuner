@@ -8,7 +8,7 @@
 /* global define: false */
 
 define( [
-	"CKEditor/SkinTuner/Presenter"
+	"-/Presenter"
 ], function( Presenter ) {
 
 	var ContextMenuPresenter, // constructor, function
@@ -24,7 +24,7 @@ define( [
 	};
 
 	/**
-	 * @auguments CKEditor/SkinTuner/Presenter
+	 * @auguments ckeditor-skintuner/Presenter
 	 * @constructor
 	 */
 	ContextMenuPresenter = function() {
@@ -42,11 +42,11 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {CKEDITOR.dom.element} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {Editor} editor
 	 * @param {CKEDITOR.ui.floatpanel} panel
 	 * @return {void}
-	 * @see CKEditor/SkinTuner/Presenter/RichCombo#onRichComboPanelReady
+	 * @see ckeditor-skintuner/Presenter/RichCombo#onRichComboPanelReady
 	 */
 	ContextMenuPresenter.prototype.onMenuPanelReady = function( CKEDITOR, container, presentation, editor, panel ) {
 		this.createEditorPanelSnapshot( CKEDITOR, container.$, editor, panel );
@@ -56,7 +56,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {CKEDITOR.dom.element} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {Editor} editor
 	 * @param {CKEDITOR.plugins.contextMenu} menu
 	 * @param {array} menuItems
@@ -98,7 +98,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {object} presentationConfiguration
 	 * @param {Editor} editor
 	 * @param {object} editorConfiguration

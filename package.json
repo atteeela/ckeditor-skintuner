@@ -16,6 +16,8 @@
         "test": "grunt test"
     },
     "dependencies": {
+        "configuration-processor": "~1",
+        "data-container": "~1",
         "event-dispatcher": "~2"
     },
     "devDependencies": {

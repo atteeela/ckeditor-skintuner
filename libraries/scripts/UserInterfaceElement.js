@@ -8,15 +8,15 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/Event",
-	"Bender/EventDispatcher/EventDispatcher"
+	"event-dispatcher/Event",
+	"event-dispatcher/EventDispatcher"
 ], function( Event, EventDispatcher ) {
 
 	var UserInterfaceElement;
 
 	/**
 	 * @abstract
-	 * @auguments Bender/EventDispatcher/EventDispatcher
+	 * @auguments event-dispatcher/EventDispatcher
 	 * @constructor
 	 */
 	UserInterfaceElement = function() {
@@ -51,7 +51,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @return {Bender/EventDispatcher/Event} dispatched event
+	 * @return {event-dispatcher/Event} dispatched event
 	 */
 	UserInterfaceElement.prototype.notifyUserInterfaceElementReady = function( CKEDITOR, container ) {
 		return this.dispatch( UserInterfaceElement.EVENT_READY, new Event( {

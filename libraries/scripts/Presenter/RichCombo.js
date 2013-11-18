@@ -8,7 +8,7 @@
 /* global define: false */
 
 define( [
-	"CKEditor/SkinTuner/Presenter"
+	"-/Presenter"
 ], function( Presenter ) {
 
 	var RichComboPresenter, // constructor, function
@@ -16,7 +16,7 @@ define( [
 		REGEXP_CALLBACK_ONMOUSEUP = ( /onmouseup="([^\(]*)\(([0-9]+),/ );
 
 	/**
-	 * @auguments CKEditor/SkinTuner/Presenter
+	 * @auguments ckeditor-skintuner/Presenter
 	 * @constructor
 	 */
 	RichComboPresenter = function() {
@@ -34,7 +34,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {Editor} editor
 	 * @param {CKEDITOR.ui.floatpanel} combo
 	 * @param {string} itemToBeMarked
@@ -53,7 +53,7 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {CKEditor/SkinTuner/Presentation} presentation
+	 * @param {ckeditor-skintuner/Presentation} presentation
 	 * @param {object} presentationConfiguration
 	 * @param {Editor} editor
 	 * @param {object} editorConfiguration

@@ -8,15 +8,15 @@
 /* global define: false */
 
 define( [
-	"Bender/EventDispatcher/EventDispatcher/Repository/EventAggregator",
-	"CKEditor/SkinTuner/Presentation"
+	"event-dispatcher/EventDispatcherRepository/EventAggregator",
+	"-/Presentation"
 ], function( EventAggregator, Presentation ) {
 
 	var PresentationRepository; // constructor, function
 
 	/**
-	 * @auguments Bender/EventDispatcher/EventDispatcher/Repository/EventAggregator
-	 * @borrows CKEditor/SkinTuner/Presentation#getSupportedEvents as PresentationRepository#getSupportedEvents
+	 * @auguments event-dispatcher/EventDispatcherRepository/EventAggregator
+	 * @borrows ckeditor-skintuner/Presentation#getSupportedEvents as PresentationRepository#getSupportedEvents
 	 * @constructor
 	 */
 	PresentationRepository = function() {

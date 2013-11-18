@@ -28,11 +28,6 @@ module.exports = function( grunt ) {
 					dest: "build/<%= pkg.version %>",
 					src: "libraries/bootstraps/*.js"
 				}, {
-					expand: true,
-					flatten: true,
-					dest: "build/<%= pkg.version %>/components/html5shiv",
-					src: "components/html5shiv/dist/html5shiv.js"
-				}, {
 					cwd: "components/jscolor/",
 					expand: true,
 					dest: "build/<%= pkg.version %>/components/jscolor",
@@ -114,10 +109,13 @@ module.exports = function( grunt ) {
 					optimize: "uglify2",
 					out: "build/<%= pkg.version %>/<%= pkg.main %>",
 					paths: {
-						"Bender/EventDispatcher": __dirname + "/node_modules/event-dispatcher/libraries/scripts/Bender/EventDispatcher",
-						"CKEditor/SkinTuner": __dirname + "/libraries/scripts/CKEditor/SkinTuner"
+						"-": __dirname + "/libraries/scripts",
+						// "configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/scripts/JsLoader/Configuration",
+						"data-container": __dirname + "/node_modules/data-container/libraries/scripts/Bender/DataContainer",
+						"event-dispatcher": __dirname + "/node_modules/event-dispatcher/libraries/scripts/Bender/EventDispatcher"
 					},
-					preserveLicenseComments: false
+					preserveLicenseComments: false,
+					uglify2: grunt.file.readJSON( "uglify2.js" )
 				}
 			}
 		}
