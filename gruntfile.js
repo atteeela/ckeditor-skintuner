@@ -110,12 +110,13 @@ module.exports = function( grunt ) {
 					out: "build/<%= pkg.version %>/<%= pkg.main %>",
 					paths: {
 						"-": __dirname + "/libraries/scripts",
-						// "configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/scripts/JsLoader/Configuration",
+						"configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/scripts/JsLoader/ConfigurationProcessor",
+						"configuration-processor/configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/modules/configuration-processor",
 						"data-container": __dirname + "/node_modules/data-container/libraries/scripts/Bender/DataContainer",
 						"event-dispatcher": __dirname + "/node_modules/event-dispatcher/libraries/scripts/Bender/EventDispatcher"
 					},
-					preserveLicenseComments: false,
-					uglify2: grunt.file.readJSON( "uglify2.js" )
+					preserveLicenseComments: false
+					// uglify2: grunt.file.readJSON( "uglify2.js" )
 				}
 			}
 		}
