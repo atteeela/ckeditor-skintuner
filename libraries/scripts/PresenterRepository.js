@@ -29,11 +29,11 @@ define( [
 	 */
 	PresenterRepository.prototype.findOneByType = function( type ) {
 		var i,
-			items = this.items;
+			list = this.list;
 
-		for ( i = 0; i < items.length; i += 1 ) {
-			if ( items[ i ].isTypeSupported( type ) ) {
-				return items[ i ];
+		for ( i = 0; i < list.length; i += 1 ) {
+			if ( list[ i ].isTypeSupported( type ) ) {
+				return list[ i ];
 			}
 		}
 	};

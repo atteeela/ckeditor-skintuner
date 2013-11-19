@@ -69,7 +69,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 	</div>
 	<script data-role="ckeditor-skintuner-presentation" type="application/json">[
 		{
-			"element_id": "fullThemed",
+			"id": "fullThemed",
 			"type": "themed",
 			"config": {
 				"language": "en",
@@ -77,7 +77,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "fullThemedRTL",
+			"id": "fullThemedRTL",
 			"type": "themed",
 			"config": {
 				"language": "he",
@@ -85,7 +85,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "basicThemed",
+			"id": "basicThemed",
 			"type": "themed",
 			"config": {
 				"language": "en",
@@ -97,7 +97,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "basicThemedRTL",
+			"id": "basicThemedRTL",
 			"type": "themed",
 			"config": {
 				"language": "he",
@@ -109,7 +109,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "fullInline",
+			"id": "fullInline",
 			"type": "inline",
 			"config": {
 				"language": "en",
@@ -121,7 +121,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "fullInlineRTL",
+			"id": "fullInlineRTL",
 			"type": "inline",
 			"config": {
 				"language": "he",
@@ -133,7 +133,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "linkDialog",
+			"id": "linkDialog",
 			"type": "dialog",
 			"priority": 1,
 			"dialog": {
@@ -146,7 +146,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "linkDialogAdvTab",
+			"after": [
+				"linkDialog"
+			],
+			"id": "linkDialogAdvTab",
 			"type": "dialog",
 			"priority": 1,
 			"dialog": {
@@ -160,7 +163,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "linkDialogRTL",
+			"after": [
+				"linkDialogAdvTab"
+			],
+			"id": "linkDialogRTL",
 			"type": "dialog",
 			"priority": 1,
 			"dialog": {
@@ -173,7 +179,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "linkDialogRTLAdvTab",
+			"after": [
+				"linkDialogRTL"
+			],
+			"id": "linkDialogRTLAdvTab",
 			"type": "dialog",
 			"priority": 1,
 			"dialog": {
@@ -187,7 +196,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "stylesCombo",
+			"id": "stylesCombo",
 			"type": "richcombo",
 			"richcombo": {
 				"name": "Styles"
@@ -197,7 +206,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "stylesComboRTL",
+			"id": "stylesComboRTL",
 			"type": "richcombo",
 			"richcombo": {
 				"name": "Styles"
@@ -207,7 +216,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "formatCombo",
+			"id": "formatCombo",
 			"type": "richcombo",
 			"richcombo": {
 				"name": "Format",
@@ -218,7 +227,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "formatComboRTL",
+			"id": "formatComboRTL",
 			"type": "richcombo",
 			"richcombo": {
 				"name": "Format",
@@ -229,7 +238,7 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "contextMenu",
+			"id": "contextMenu",
 			"type": "contextmenu",
 			"contextmenu": {
 				"items": "link(on),unlink(disabled),table,tabledelete,tablecell"
@@ -239,7 +248,10 @@ For licensing, see LICENSE.md or http://ckeditor.com/license
 			}
 		},
 		{
-			"element_id": "contextMenuRTL",
+			"after": [
+				"contextMenu"
+			],
+			"id": "contextMenuRTL",
 			"type": "contextmenu",
 			"contextmenu": {
 				"items": "link(on),unlink(disabled),table,tabledelete,tablecell"

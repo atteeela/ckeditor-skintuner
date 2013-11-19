@@ -113,7 +113,9 @@ module.exports = function( grunt ) {
 						"configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/scripts/JsLoader/ConfigurationProcessor",
 						"configuration-processor/configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/modules/configuration-processor",
 						"data-container": __dirname + "/node_modules/data-container/libraries/scripts/Bender/DataContainer",
-						"event-dispatcher": __dirname + "/node_modules/event-dispatcher/libraries/scripts/Bender/EventDispatcher"
+						"dependency-manager": __dirname + "/node_modules/dependency-manager/libraries/scripts/Bender/DependencyManager",
+						"event-dispatcher": __dirname + "/node_modules/event-dispatcher/libraries/scripts/Bender/EventDispatcher",
+						"flow-inspector": __dirname + "/node_modules/flow-inspector/libraries/scripts/JsLoader/FlowInspector"
 					},
 					preserveLicenseComments: false
 					// uglify2: grunt.file.readJSON( "uglify2.js" )

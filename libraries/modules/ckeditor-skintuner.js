@@ -10,7 +10,8 @@
 
 define( [
 	"data-container/Repository",
-	"-/IdlenessMonitor",
+	"flow-inspector/IdlenessMonitor",
+	"flow-inspector/TaskAggregator",
 	"-/Presentation",
 	"-/Presenter",
 	"-/Presenter/ContextMenu",
@@ -23,7 +24,7 @@ define( [
 	"-/UserInterfaceElement",
 	"-/UserInterfaceElement/ColorPicker",
 	"-/UserInterfaceElement/Toolbar"
-], function( Repository, IdlenessMonitor, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen, UserInterfaceElement, ColorPicker, Toolbar ) {
+], function( Repository, IdlenessMonitor, TaskAggregator, Presentation, Presenter, DialogPresenter, InlineEditorPresenter, ContextMenuPresenter, RichComboPresenter, ThemedEditorPresenter, SkinTuner, SplashScreen, UserInterfaceElement, ColorPicker, Toolbar ) {
 
 	var colorPicker = new ColorPicker(),
 		contextMenuPresenter = new ContextMenuPresenter(),
@@ -77,22 +78,17 @@ define( [
 	 * @return {ckeditor-skintuner/SkinTuner}
 	 */
 	presentEditorElements = function( CKEDITOR, container, configurations ) {
-		var processedActions = 0,
-			i,
+		var i,
 			idlenessMonitor,
-			onActionProcessed,
 			partiallyCreatedEditorsRepository,
 			presenterRepository,
-			skinTuner = new SkinTuner(),
+			skinTuner,
 			splashScreen = new SplashScreen( CKEDITOR, container ),
-			totalActions = 0;
+			taskAggregator = new TaskAggregator();
 
-		onActionProcessed = function() {
-			processedActions += 1;
-			handleProcessedActions( splashScreen, processedActions, totalActions );
-		};
+		skinTuner = new SkinTuner( taskAggregator );
 
-		idlenessMonitor = new IdlenessMonitor( skinTuner );
+		idlenessMonitor = new IdlenessMonitor( taskAggregator );
 
 		idlenessMonitor.addListener( IdlenessMonitor.EVENT_BUSY, function() {
 			splashScreen.show();
@@ -110,12 +106,8 @@ define( [
 		presenterRepository.add( themedEditorPresenter );
 
 		partiallyCreatedEditorsRepository = skinTuner.partiallyCreatedEditorsRepository;
-		partiallyCreatedEditorsRepository.addListener( Repository.EVENT_ITEM_REMOVED, onActionProcessed );
-
-		skinTuner.presentationRepository.addListener( Presentation.EVENT_PRESENTATION_DONE, onActionProcessed );
 
 		for ( i = 0; i < configurations.length; i += 1 ) {
-			totalActions += ( 2 * configurations[ i ].length );
 			skinTuner.presentEditorElements( CKEDITOR, container, configurations[ i ] );
 		}
 

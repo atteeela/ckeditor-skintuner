@@ -12,33 +12,7 @@ define( [
 	"-/Presenter"
 ], function( Presentation, Presenter ) {
 
-	var DialogPresenter, // constructor, function
-
-		execEditorCommand, // private, function
-		ongoingPresentation;
-
-	/**
-	 * @param {ckeditor-skintuner/Presentation} presentation
-	 * @param {Editor} editor
-	 * @param {string} dialogName
-	 * @return {void}
-	 * @throws {Error} if race condition occurred
-	 */
-	execEditorCommand = function( presentation, editor, dialogName ) {
-		if ( !ongoingPresentation ) {
-			ongoingPresentation = presentation;
-			ongoingPresentation.addListener( Presentation.EVENT_PRESENTATION_DONE, function() {
-				ongoingPresentation = null;
-			} );
-			editor.execCommand( dialogName );
-
-			return;
-		}
-
-		ongoingPresentation.addListener( Presentation.EVENT_PRESENTATION_DONE, function() {
-			execEditorCommand( presentation, editor, dialogName );
-		} );
-	};
+	var DialogPresenter; // constructor, function
 
 	/**
 	 * @auguments ckeditor-skintuner/Presenter
@@ -129,7 +103,7 @@ define( [
 			that.onDialogShow( CKEDITOR, container, presentation, editor, tabName, evt.data );
 		} );
 
-		execEditorCommand( presentation, editor, dialogName );
+		editor.execCommand( dialogName );
 	};
 
 	return DialogPresenter;

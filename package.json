@@ -18,7 +18,9 @@
     "dependencies": {
         "configuration-processor": "~1",
         "data-container": "~1",
-        "event-dispatcher": "~2"
+        "dependency-manager": "~1",
+        "event-dispatcher": "~2",
+        "flow-inspector": "~1"
     },
     "devDependencies": {
         "bower": "~1",

@@ -5,15 +5,16 @@
 
 "use strict";
 
+/* jshint browser: true */
 /* global define: false */
 
 define( [
 	"data-container/Repository",
-	"-/ConfigurationNormalizer",
 	"-/Presentation",
+	"-/PresentationConfiguration",
 	"-/PresentationRepository",
 	"-/PresenterRepository"
-], function( Repository, ConfigurationNormalizer, Presentation, PresentationRepository, PresenterRepository ) {
+], function( Repository, Presentation, PresentationConfiguration, PresentationRepository, PresenterRepository ) {
 
 	var SkinTuner; // constructor, function
 
@@ -21,7 +22,6 @@ define( [
 	 * @constructor
 	 */
 	SkinTuner = function() {
-		this.configurationNormalizer = new ConfigurationNormalizer();
 		this.editorsRepository = new Repository();
 		this.partiallyCreatedEditorsRepository = new Repository();
 		this.presentationRepository = new PresentationRepository();
@@ -29,18 +29,11 @@ define( [
 	};
 
 	/**
-	 * @param {CKEDITOR} CKEDITOR
-	 * @param {HTMLElement} container
-	 * @param {array} configurations
-	 * @param {object} editorConfiguration
-	 * @param {string} presentationType
-	 * @param {int} presentationPriority
-	 * @param {object} presentationConfiguration
-	 * @return {void}
+	 * @param {mixed} configuration
+	 * @return {CKSource/SkinTuner/PresentationConfiguration}
 	 */
-	SkinTuner.prototype.onPresentationDone = function( CKEDITOR, container, configurations, editorConfiguration, presentationType, presentationPriority, presentationConfiguration ) {
-		console.log( presentationType );
-		console.log( presentationPriority );
+	SkinTuner.prototype.encapsulatePresentationConfiguration = function( configuration ) {
+		return new PresentationConfiguration( configuration );
 	};
 
 	/**
@@ -53,13 +46,13 @@ define( [
 	 */
 	SkinTuner.prototype.presentEditorElement = function( CKEDITOR, container, configurations, configuration ) {
 		var editor,
+			editorContainer,
 			editorsRepository = this.editorsRepository,
 			partiallyCreatedEditorsRepository = this.partiallyCreatedEditorsRepository,
 			presentationRepository = this.presentationRepository,
 			presentation,
 			presentationConfiguration = {},
-			presenter,
-			that = this;
+			presenter;
 
 		presenter = this.presenterRepository.findOneByType( configuration.type );
 		if ( !presenter ) {
@@ -70,7 +63,8 @@ define( [
 			presentationConfiguration = configuration[ configuration.type ];
 		}
 
-		presentation = presenter.present( CKEDITOR, configuration.element, configuration.type, configuration.priority, presentationConfiguration, configuration.config );
+		editorContainer = document.getElementById( configuration.id );
+		presentation = presenter.present( CKEDITOR, editorContainer, configuration.type, configuration.priority, presentationConfiguration, configuration.config );
 
 		editor = presentation.getEditor();
 
@@ -81,9 +75,6 @@ define( [
 		} );
 
 		presentationRepository.add( presentation );
-		presentation.addListener( Presentation.EVENT_PRESENTATION_DONE, function( evt ) {
-			that.onPresentationDone( CKEDITOR, container, configurations, evt.editorConfiguration, evt.presentationType, evt.presentationPriority, evt.presentationConfiguration );
-		} );
 
 		return presentation;
 	};
@@ -100,26 +91,12 @@ define( [
 			that = this;
 
 		configurations = configurations.map( function( configuration ) {
-			return that.configurationNormalizer.normalizeConfiguration( configuration, container );
+			return that.encapsulatePresentationConfiguration( configuration );
 		} );
-
-		configurations = this.sortConfigurations( CKEDITOR, container, configurations );
 
 		for ( i = 0; i < configurations.length; i += 1 ) {
 			presentation = this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
 		}
-	};
-
-	/**
-	 * @param {CKEDITOR} CKEDITOR
-	 * @param {HTMLElement} container
-	 * @param {array} configurations
-	 * @return {void}
-	 */
-	SkinTuner.prototype.sortConfigurations = function( CKEDITOR, container, configurations ) {
-		return configurations.sort( function( a, b ) {
-			return b.priority - a.priority;
-		} );
 	};
 
 	return SkinTuner;
