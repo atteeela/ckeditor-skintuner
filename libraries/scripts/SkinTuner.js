@@ -87,15 +87,19 @@ define( [
 	 */
 	SkinTuner.prototype.presentEditorElements = function( CKEDITOR, container, configurations ) {
 		var i,
-			presentation,
+			// presentation,
 			that = this;
 
 		configurations = configurations.map( function( configuration ) {
 			return that.encapsulatePresentationConfiguration( configuration );
 		} );
 
+		// schedule presentations..
+
 		for ( i = 0; i < configurations.length; i += 1 ) {
-			presentation = this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
+			console.log( configurations[ i ].id );
+			console.log( configurations[ i ].after );
+			// presentation = this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
 		}
 	};
 
