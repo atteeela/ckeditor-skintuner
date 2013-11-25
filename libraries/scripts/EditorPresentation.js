@@ -34,8 +34,17 @@ define( [
 	 * @param {mixed} data
 	 * @return {void}
 	 */
-	EditorPresentation.prototype.doStart = function( data ) {
-		this.editor = CKEDITOR.appendTo( this.container, this.editorConfiguration );
+	EditorPresentation.prototype.start = function( data ) {
+		var editor,
+			that = this;
+
+		this.starting( data );
+
+		editor = CKEDITOR.appendTo( this.container, this.editorConfiguration );
+		editor.on( "instanceReady", function() {
+			that.editor = editor;
+			that.doStart( data );
+		} );
 	};
 
 	return EditorPresentation;

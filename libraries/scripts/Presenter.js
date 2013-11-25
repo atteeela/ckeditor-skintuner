@@ -173,7 +173,6 @@ define( [
 
 		editorPresentation.start();
 		presentation.addListenerStart( function() {
-			console.log( "PRESENTATION START" );
 			that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, presentation.getEditor(), editorConfiguration );
 		} );
 
