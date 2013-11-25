@@ -18,21 +18,7 @@ define( [
 	"-/PresenterRepository"
 ], function( Repository, DependencyGraph, Scheduler, Presentation, PresentationConfiguration, PresentationRepository, PresenterRepository ) {
 
-	var SkinTuner, // constructor, function
-		doPresentEditorElements; // private, function
-
-	/**
-	 * @access private
-	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
-	 * @param {CKEDITOR} CKEDITOR
-	 * @param {HTMLElement} container
-	 * @param {array} configurations
-	 * @param {dependency-manager/ScheduleList} presentations
-	 * @return {void}
-	 */
-	doPresentEditorElements = function( skinTuner, CKEDITOR, container, configurations, presentations ) {
-		console.log( presentations );
-	};
+	var SkinTuner; // constructor, function
 
 	/**
 	 * @constructor
@@ -95,17 +81,13 @@ define( [
 	 * @return {void}
 	 */
 	SkinTuner.prototype.presentEditorElements = function( CKEDITOR, container, configurations ) {
-		var presentations,
-			that = this;
+		var that = this;
 
 		configurations = configurations.map( function( configuration ) {
 			return that.encapsulatePresentationConfiguration( configuration );
 		} );
 
-		presentations = this.schedulePresentations( CKEDITOR, container, configurations );
-		presentations.onceDone( function( evt ) {
-			doPresentEditorElements( that, CKEDITOR, container, configurations, presentations.schedule );
-		} );
+		this.executePresentations( CKEDITOR, container, configurations );
 	};
 
 	/**
@@ -114,7 +96,7 @@ define( [
 	 * @param {array} configurations
 	 * @return {void}
 	 */
-	SkinTuner.prototype.schedulePresentations = function( CKEDITOR, container, configurations ) {
+	SkinTuner.prototype.executePresentations = function( CKEDITOR, container, configurations ) {
 		var after,
 			configurationsMap = {},
 			dependencies = new DependencyGraph(),
@@ -140,7 +122,7 @@ define( [
 			}
 		}
 
-		return scheduler.schedule( dependencies );
+		return scheduler.execute( dependencies );
 	};
 
 	return SkinTuner;

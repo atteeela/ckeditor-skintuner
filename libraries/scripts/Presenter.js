@@ -171,7 +171,9 @@ define( [
 			presentation = new Presentation( editorPresentation, presentationType, presentationPriority, presentationConfiguration ),
 			that = this;
 
+		editorPresentation.start();
 		presentation.addListenerStart( function() {
+			console.log( "PRESENTATION START" );
 			that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, presentation.getEditor(), editorConfiguration );
 		} );
 
