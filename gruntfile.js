@@ -113,7 +113,7 @@ module.exports = function( grunt ) {
 						"configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/scripts/JsLoader/ConfigurationProcessor",
 						"configuration-processor/configuration-processor": __dirname + "/node_modules/configuration-processor/libraries/modules/configuration-processor",
 						"data-container": __dirname + "/node_modules/data-container/libraries/scripts/Bender/DataContainer",
-						"dependency-manager": __dirname + "/node_modules/dependency-manager/libraries/scripts/Bender/DependencyManager",
+						"dependency-manager": __dirname + "/node_modules/dependency-manager/libraries/scripts/JsLoader/DependencyManager",
 						"event-dispatcher": __dirname + "/node_modules/event-dispatcher/libraries/scripts/Bender/EventDispatcher",
 						"flow-inspector": __dirname + "/node_modules/flow-inspector/libraries/scripts/JsLoader/FlowInspector"
 					},

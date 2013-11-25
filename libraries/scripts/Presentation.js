@@ -8,82 +8,39 @@
 /* global define: false */
 
 define( [
-	"flow-inspector/Task"
-], function( Task ) {
+	"flow-inspector/Task/Paired"
+], function( PairedTask ) {
 
-	var Presentation, // constructor, function
-		createPresentationEvent; // private, function
-
-	/**
-	 * @Param {ckeditor-skintuner/Presentation} presentation
-	 * @return {event-dispatcher/Event}
-	 */
-	createPresentationEvent = function( presentation ) {
-		return {
-			editor: presentation.editor,
-			editorConfiguration: presentation.editorConfiguration,
-			presentation: presentation,
-			presentationConfiguration: presentation.presentationConfiguration,
-			presentationPriority: presentation.presentationPriority,
-			presentationType: presentation.presentationType
-		};
-	};
+	var Presentation; // constructor, function
 
 	/**
-	 * @auguments flow-inspector/Task
+	 * @auguments flow-inspector/Task/Paired
 	 * @constructor
 	 * @param {Editor} editor instance of CKEditor
 	 * @param {object} editorConfiguration
 	 * @param {string} presentationType
-	 * @param {int} presentationPriority
 	 * @param {object} presentationConfiguration
 	 */
-	Presentation = function( editor, editorConfiguration, presentationType, presentationPriority, presentationConfiguration ) {
-		Task.call( this );
+	Presentation = function( editorPresenter, presentationType, presentationConfiguration ) {
+		PairedTask.call( this, editorPresenter );
 
-		var that = this;
-
-		this.editor = editor;
-		this.editorConfiguration = editorConfiguration;
 		this.presentationType = presentationType;
-		this.presentationPriority = presentationPriority;
 		this.presentationConfiguration = presentationConfiguration;
-
-		editor.on( 'instanceReady', function() {
-			that.notifyEditorReady();
-		} );
 	};
-	Presentation.prototype = Object.create( Task.prototype );
-
-	/**
-	 * @constant {string}
-	 */
-	Presentation.EVENT_EDITOR_READY = "editor.ready";
+	Presentation.prototype = Object.create( PairedTask.prototype );
 
 	/**
 	 * @return {Editor}
+	 * @throws {Error} if editor instance is not created yet
 	 */
 	Presentation.prototype.getEditor = function() {
-		return this.editor;
-	};
+		var editor = this.task.editor;
 
-	/**
-	 * @return {array}
-	 */
-	Presentation.prototype.getSupportedEvents = function() {
-		var taskEvents = Task.prototype.getSupportedEvents.call( this );
+		if ( !editor ) {
+			throw new Error( "Editor instance is not created." );
+		}
 
-		return taskEvents.concat( [
-			Presentation.EVENT_EDITOR_READY
-		] );
-	};
-
-	/**
-	 * @fires ckeditor-skintuner/Presentation#EVENT_EDITOR_READY
-	 * @return {void}
-	 */
-	Presentation.prototype.notifyEditorReady = function() {
-		this.dispatch( Presentation.EVENT_EDITOR_READY, createPresentationEvent( this ) );
+		return editor;
 	};
 
 	return Presentation;

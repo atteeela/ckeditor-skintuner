@@ -8,8 +8,9 @@
 /* global define: false */
 
 define( [
+	"-/EditorPresentation",
 	"-/Presentation"
-], function( Presentation ) {
+], function( EditorPresentation, Presentation ) {
 
 	var Presenter, // constructor, function
 		REGEXP_TAG_HEAD = ( /(?=<\/head>)/ ),
@@ -113,16 +114,6 @@ define( [
 	/**
 	 * @param {CKEDITOR} CKEDITOR
 	 * @param {HTMLElement} container
-	 * @param {object} editorConfiguration
-	 * @return {Editor}
-	 */
-	Presenter.prototype.createEditor = function( CKEDITOR, container, editorConfiguration ) {
-		return CKEDITOR.appendTo( container, editorConfiguration );
-	};
-
-	/**
-	 * @param {CKEDITOR} CKEDITOR
-	 * @param {HTMLElement} container
 	 * @param {Editor} editor
 	 * @param {CKEDITOR.ui.floatpanel} panel
 	 * @return {void}
@@ -176,13 +167,12 @@ define( [
 	 * @return {ckeditor-skintuner/Presentation}
 	 */
 	Presenter.prototype.present = function( CKEDITOR, container, presentationType, presentationPriority, presentationConfiguration, editorConfiguration ) {
-		var editor = this.createEditor( CKEDITOR, container, editorConfiguration ),
-			presentation = new Presentation( editor, editorConfiguration, presentationType, presentationPriority, presentationConfiguration ),
+		var editorPresentation = new EditorPresentation( CKEDITOR, container, editorConfiguration ),
+			presentation = new Presentation( editorPresentation, presentationType, presentationPriority, presentationConfiguration ),
 			that = this;
 
-		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
-			presentation.start();
-			that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, editor, editorConfiguration );
+		presentation.addListenerStart( function() {
+			that.presentEditor( CKEDITOR, container, presentation, presentationConfiguration, presentation.getEditor(), editorConfiguration );
 		} );
 
 		return presentation;

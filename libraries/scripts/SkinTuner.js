@@ -10,20 +10,35 @@
 
 define( [
 	"data-container/Repository",
+	"dependency-manager/DependencyGraph",
+	"dependency-manager/Scheduler",
 	"-/Presentation",
 	"-/PresentationConfiguration",
 	"-/PresentationRepository",
 	"-/PresenterRepository"
-], function( Repository, Presentation, PresentationConfiguration, PresentationRepository, PresenterRepository ) {
+], function( Repository, DependencyGraph, Scheduler, Presentation, PresentationConfiguration, PresentationRepository, PresenterRepository ) {
 
-	var SkinTuner; // constructor, function
+	var SkinTuner, // constructor, function
+		doPresentEditorElements; // private, function
+
+	/**
+	 * @access private
+	 * @param {ckeditor-skintuner/SkinTuner} skinTuner
+	 * @param {CKEDITOR} CKEDITOR
+	 * @param {HTMLElement} container
+	 * @param {array} configurations
+	 * @param {dependency-manager/ScheduleList} presentations
+	 * @return {void}
+	 */
+	doPresentEditorElements = function( skinTuner, CKEDITOR, container, configurations, presentations ) {
+		console.log( presentations );
+	};
 
 	/**
 	 * @constructor
 	 */
 	SkinTuner = function() {
 		this.editorsRepository = new Repository();
-		this.partiallyCreatedEditorsRepository = new Repository();
 		this.presentationRepository = new PresentationRepository();
 		this.presenterRepository = new PresenterRepository();
 	};
@@ -45,10 +60,8 @@ define( [
 	 * @throws {Error} if there is no presenter registered
 	 */
 	SkinTuner.prototype.presentEditorElement = function( CKEDITOR, container, configurations, configuration ) {
-		var editor,
-			editorContainer,
+		var editorContainer,
 			editorsRepository = this.editorsRepository,
-			partiallyCreatedEditorsRepository = this.partiallyCreatedEditorsRepository,
 			presentationRepository = this.presentationRepository,
 			presentation,
 			presentationConfiguration = {},
@@ -66,12 +79,8 @@ define( [
 		editorContainer = document.getElementById( configuration.id );
 		presentation = presenter.present( CKEDITOR, editorContainer, configuration.type, configuration.priority, presentationConfiguration, configuration.config );
 
-		editor = presentation.getEditor();
-
-		partiallyCreatedEditorsRepository.add( editor );
-		presentation.addListener( Presentation.EVENT_EDITOR_READY, function() {
-			partiallyCreatedEditorsRepository.remove( editor );
-			editorsRepository.add( editor );
+		presentation.task.addListenerDone( function() {
+			editorsRepository.add( presentation.getEditor() );
 		} );
 
 		presentationRepository.add( presentation );
@@ -86,21 +95,52 @@ define( [
 	 * @return {void}
 	 */
 	SkinTuner.prototype.presentEditorElements = function( CKEDITOR, container, configurations ) {
-		var i,
-			// presentation,
+		var presentations,
 			that = this;
 
 		configurations = configurations.map( function( configuration ) {
 			return that.encapsulatePresentationConfiguration( configuration );
 		} );
 
-		// schedule presentations..
+		presentations = this.schedulePresentations( CKEDITOR, container, configurations );
+		presentations.onceDone( function( evt ) {
+			doPresentEditorElements( that, CKEDITOR, container, configurations, presentations.schedule );
+		} );
+	};
+
+	/**
+	 * @param {CKEDITOR} CKEDITOR
+	 * @param {HTMLElement} container
+	 * @param {array} configurations
+	 * @return {void}
+	 */
+	SkinTuner.prototype.schedulePresentations = function( CKEDITOR, container, configurations ) {
+		var after,
+			configurationsMap = {},
+			dependencies = new DependencyGraph(),
+			i,
+			presentation,
+			scheduler = new Scheduler();
 
 		for ( i = 0; i < configurations.length; i += 1 ) {
-			console.log( configurations[ i ].id );
-			console.log( configurations[ i ].after );
-			// presentation = this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
+			presentation = this.presentEditorElement( CKEDITOR, container, configurations, configurations[ i ] );
+			configurationsMap[ configurations[ i ].id ] = {
+				configuration: configurations[ i ],
+				presentation: presentation
+			};
+			dependencies.add( presentation );
 		}
+
+		for ( presentation in configurationsMap ) {
+			if ( configurationsMap.hasOwnProperty( presentation ) ) {
+				after = configurationsMap[ presentation ].configuration.after;
+				for ( i = 0; i < after.length; i += 1 ) {
+					dependencies.get( configurationsMap[ after[ i ] ].presentation ).next.add( configurationsMap[ presentation ].presentation );
+				}
+			}
+		}
+
+		return scheduler.schedule( dependencies );
 	};
 
 	return SkinTuner;
